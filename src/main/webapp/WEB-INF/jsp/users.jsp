@@ -14,6 +14,7 @@
                 <td>Email</td>
                 <td>Enabled</td>
                 <td>Registered</td>
+                <td>Roles</td>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                     <td>${user.email}</td>
                     <td>${user.enabled}</td>
                     <td>${user.registered}</td>
+                    <td>${user.roles}</td>
                 </tr>
             </c:forEach>
         </tbody>

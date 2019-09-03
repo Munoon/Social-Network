@@ -1,6 +1,7 @@
 package com.train4game.social.service;
 
 import com.train4game.social.TimingExtension;
+import com.train4game.social.model.Role;
 import com.train4game.social.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,10 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.util.Date;
-
 import static com.train4game.social.data.UserTestData.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(locations = "classpath:spring/spring-app.xml")
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
@@ -23,7 +21,7 @@ class UserServiceTest {
 
     @Test
     void create() {
-        User user = new User(null, "New User", "email@gmail.com", "password");
+        User user = new User(null, "New User", "email@gmail.com", "password", Role.ROLE_USER);
         User created = service.create(user);
         user.setId(created.getId());
         assertMatch(service.getAll(), ADMIN, USER, user);
