@@ -18,7 +18,8 @@
     </bean>
 
     <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
-        <jdbc:script location="classpath:db/${jdbc.initLocation}"/>
+        <jdbc:script location="classpath:db/initDB.sql"/>
+        <jdbc:script location="classpath:db/populateDB.sql"/>
     </jdbc:initialize-database>
 
     <bean id="dataSource"
