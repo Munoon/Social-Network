@@ -1,5 +1,6 @@
 package com.train4game.social.service;
 
+import com.train4game.social.TimingExtension;
 import com.train4game.social.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(locations = "classpath:spring/spring-app.xml")
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ExtendWith(TimingExtension.class)
 class UserServiceTest {
     @Autowired
     private UserService service;
