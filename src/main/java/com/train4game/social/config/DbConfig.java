@@ -36,10 +36,10 @@ public class DbConfig {
     @Bean
     public DataSource dataSource() {
         final var dataSource = new DriverManagerDataSource();
-        dataSource.setUrl(env.getProperty("database.url"));
-        dataSource.setDriverClassName(env.getProperty("database.driverClassName"));
-        dataSource.setUsername(env.getProperty("database.username"));
-        dataSource.setPassword(env.getProperty("database.password"));
+        dataSource.setUrl(env.getRequiredProperty("database.url"));
+        dataSource.setDriverClassName(env.getRequiredProperty("database.driverClassName"));
+        dataSource.setUsername(env.getRequiredProperty("database.username"));
+        dataSource.setPassword(env.getRequiredProperty("database.password"));
         return dataSource;
     }
 
@@ -58,9 +58,9 @@ public class DbConfig {
         jpaVendorAdapter.setShowSql(true);
 
         Properties properties = new Properties();
-        properties.setProperty(FORMAT_SQL, env.getProperty("hibernate.format_sql"));
-        properties.setProperty(USE_SQL_COMMENTS, env.getProperty("hibernate.use_sql_comments"));
-        properties.setProperty(GENERATE_STATISTICS, env.getProperty("hibernate.generate_statistics"));
+        properties.setProperty(FORMAT_SQL, env.getRequiredProperty("hibernate.format_sql"));
+        properties.setProperty(USE_SQL_COMMENTS, env.getRequiredProperty("hibernate.use_sql_comments"));
+        properties.setProperty(GENERATE_STATISTICS, env.getRequiredProperty("hibernate.generate_statistics"));
 
 
         final var entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
