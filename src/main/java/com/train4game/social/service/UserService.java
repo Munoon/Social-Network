@@ -1,15 +1,19 @@
 package com.train4game.social.service;
 
+import com.train4game.social.AuthorizedUser;
 import com.train4game.social.model.User;
 import com.train4game.social.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
@@ -37,5 +41,13 @@ public class UserService {
     public void update(User user) {
         Assert.notNull(user, "User must be not null");
         repository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null)
+            throw new UsernameNotFoundException("User with email " + email + " not found");
+        return new AuthorizedUser(user);
     }
 }
