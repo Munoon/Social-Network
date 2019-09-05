@@ -74,5 +74,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("/webjars/")
                 .resourceChain(false);
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
     }
 }
