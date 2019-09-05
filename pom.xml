@@ -42,6 +42,10 @@
         <!-- JSON -->
         <jackson-json.version>2.9.9</jackson-json.version>
 
+        <!-- WEBJARS -->
+        <webjars-bootstrap.version>4.3.1</webjars-bootstrap.version>
+        <webjars-locator.version>0.36</webjars-locator.version>
+
         <!-- ANNOTATIONS -->
         <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
     </properties>
@@ -218,6 +222,19 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson-json.version}</version>
+        </dependency>
+
+        <!-- WEBJARS -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+        </dependency>
+        <!-- To make webjars version-agnostic -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>${webjars-locator.version}</version>
         </dependency>
 
         <!-- ANNOTATIONS -->
