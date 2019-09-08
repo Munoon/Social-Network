@@ -5,19 +5,26 @@
 <div class="container">
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
-            <div id="loginForm">
+            <div th:attrappend="hidden=${register == null ? null : 'hidden'}" id="loginForm">
                 <h2 class="text-center">Login</h2>
-                <form th:action="@{login}" th:object="${userTo}">
-                    <input th:replace="~{fragments/inputField :: input('Email', 'email', 'email')}"/>
-                    <input th:replace="~{fragments/inputField :: input('Password', 'password', 'password')}"/>
+                <form th:action="@{login}" method="post">
+                    <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input class="form-control" id="loginEmail" type="text" name="username"/>
+                    </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input class="form-control" id="loginPassword" type="password" name="password"/>
+                </div>
                     <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </form>
                 <button class="btn btn-danger btn-primary btn-block mt-1" onclick="showRegister()">Registration</button>
             </div>
 
-            <div hidden id="registrationForm">
+            <div th:attrappend="hidden=${register == null ? 'hidden' : null}"  id="registrationForm">
                 <h2 class="text-center">Registration</h2>
-                <form th:action="@{register}" th:object="${userTo}">
+                <form th:action="@{register}" th:object="${userTo}" method="post">
+                    <p th:if="${#fields.hasErrors('*')}" th:text="${errors}"></p>
                     <input th:replace="~{fragments/inputField :: input('Name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('Email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('Password', 'password', 'password')}"/>
@@ -29,6 +36,7 @@
         </div>
     </div>
 </div>
-<script th:src="@{resources/script.js}"></script>
+<script href="web" th:src="@{webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+<script th:src="@{resources/script.js}" defer></script>
 </body>
 </html>
