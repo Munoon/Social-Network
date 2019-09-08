@@ -1,14 +1,20 @@
-const registrationForm = document.getElementById("registrationForm");
-const loginForm = document.getElementById("loginForm");
+const registrationEl = document.getElementById("registrationEl");
+const loginEl = document.getElementById("loginEl");
 
 function showRegister() {
-    registrationForm.hidden = false;
-    loginForm.hidden = true;
+    registrationEl.hidden = false;
+    loginEl.hidden = true;
 }
 
 function showLogin() {
-    registrationForm.hidden = true;
-    loginForm.hidden = false;
+    registrationEl.hidden = true;
+    loginEl.hidden = false;
+}
+
+function login(email, pass) {
+    const inputs = document.forms['loginForm'].elements;
+    inputs['username'].value = email;
+    inputs['password'].value = pass;
 }
 
 

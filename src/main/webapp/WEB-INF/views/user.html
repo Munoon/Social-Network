@@ -11,7 +11,7 @@
     <span th:text="${user.registered}">2019-09-04 22:04:09.15078</span>
     <span th:text="${user.roles}">ROLE_ADMIN</span>
     <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout">
+        <input type="submit" th:value="#{common.logout}">
     </form>
 </body>
 </html>

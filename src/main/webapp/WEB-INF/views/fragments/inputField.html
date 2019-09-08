@@ -1,6 +1,6 @@
 <th:block th:fragment="input(label, name, type)" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group" th:with="valid=${!#fields.hasErrors(name)}">
-        <label th:for="${name}" th:text="${label}">Label</label>
+        <label th:for="${name}" th:text="#{__${label}__}">Label</label>
         <input th:type="${type}" th:field="*{__${name}__}" class="form-control" th:errorclass="is-invalid"/>
         <div class="invalid-feedback" th:if="${!valid}" th:errors="*{__${name}__}"></div>
     </div>
