@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan("com.train4game.social.**.service")
-@Import({DbConfig.class, WebSecurityConfig.class, SpringSecurityInitializer.class})
+@Import({DbConfig.class, SpringSecurityInitializer.class})
 public class AppConfig {
 }

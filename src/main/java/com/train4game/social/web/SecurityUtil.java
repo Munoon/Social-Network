@@ -1,24 +1,35 @@
 package com.train4game.social.web;
 
+import com.train4game.social.AuthorizedUser;
 import com.train4game.social.model.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import static com.train4game.social.model.Role.ROLE_ADMIN;
+import static java.util.Objects.requireNonNull;
 
 public class SecurityUtil {
-    private static User AUTHORIZED_USER = new User(User.START_SEQ, "Admin", "admin@gmail.com", "admin", ROLE_ADMIN);
-
     private SecurityUtil() {
     }
 
-    public static void setAuthUser(User user) {
-        AUTHORIZED_USER = user;
+    private static AuthorizedUser safeGet() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null)
+            return null;
+        Object principal = auth.getPrincipal();
+        return (principal instanceof AuthorizedUser) ? (AuthorizedUser) principal : null;
+    }
+
+    public static AuthorizedUser getAuthorizedUser() {
+        AuthorizedUser user = safeGet();
+        requireNonNull(user, "No authorized user found");
+        return user;
     }
 
     public static User authUser() {
-        return AUTHORIZED_USER;
+        return getAuthorizedUser().getUser();
     }
 
     public static int authUserId() {
-        return AUTHORIZED_USER.getId();
+        return getAuthorizedUser().getId();
     }
 }
