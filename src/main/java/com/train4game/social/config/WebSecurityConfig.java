@@ -19,14 +19,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/rest/admin/**", "/admin/**")
-                .hasRole("ROLE_ADMIN")
-                .and()
-            .authorizeRequests()
-                .antMatchers("/rest/**", "/**")
-                .authenticated()
-                .and()
-            .authorizeRequests()
                 .antMatchers("/login")
                 .permitAll()
                 .and()
@@ -34,16 +26,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register")
                 .anonymous()
                 .and()
+            .authorizeRequests()
+                .antMatchers("/rest/**", "/**")
+                .authenticated()
+                .and()
+            .authorizeRequests()
+                .antMatchers("/rest/admin/**", "/admin/**")
+                .hasRole("ADMIN")
+                .and()
             .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/profile")
-                .failureForwardUrl("/profile?error=true")
-                .loginProcessingUrl("/login_check")
+                .failureForwardUrl("/login?error=true")
+                .loginProcessingUrl("/login")
                 .and()
             .logout()
                 .logoutSuccessUrl("/login")
                 .and()
-            .csrf().ignoringAntMatchers("/rest/**");
+            .csrf().disable();
     }
 
     @Override
