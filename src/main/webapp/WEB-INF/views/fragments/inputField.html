@@ -1,0 +1,7 @@
+<th:block th:fragment="input(label, name, type)" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group">
+        <label th:for="${name}" th:text="${label}">Label</label>
+        <input th:type="${type}" th:field="*{__${name}__}" class="form-control"/>
+        <p th:if="${#fields.hasErrors(name)}" class="invalid-feedback" th:errors="*{__${name}__}"></p>
+    </div>
+</th:block>
