@@ -21,19 +21,27 @@ public class SecurityController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("userTo", new UserTo());
-        return "registration";
+        return loginPage(model, new UserTo(), false);
     }
 
+    @GetMapping("/register")
+    public String register(Model model) {
+        return loginPage(model, new UserTo(), true);
+    }
 
     @PostMapping("/register")
     public String register(@Valid UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
-        if (result.hasErrors()) {
-            model.addAttribute("register", true);
-            return "registration";
-        }
+        if (result.hasErrors())
+            return loginPage(model, userTo, true);
+
         userService.create(createNewFromTo(userTo));
         sessionStatus.setComplete();
-        return "redirect:/login";
+        return "redirect:/profile";
+    }
+
+    private String loginPage(Model model, UserTo userTo, boolean register) {
+        model.addAttribute("userTo", userTo);
+        model.addAttribute("register", register);
+        return "login";
     }
 }
