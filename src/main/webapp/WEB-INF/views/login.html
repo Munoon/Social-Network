@@ -12,7 +12,7 @@
                 You have been logged out.
             </div>
 
-            <div th:attrappend="hidden=${register ? 'hidden' : null}" id="loginForm">
+            <div th:attrappend="hidden=${register} ? 'hidden'" id="loginForm">
                 <h2 class="text-center">Login</h2>
                 <form th:action="@{/login}" method="post">
                     <div class="form-group">
@@ -28,22 +28,20 @@
                 <button class="btn btn-danger btn-primary btn-block mt-1" onclick="showRegister()">Registration</button>
             </div>
 
-            <div th:attrappend="hidden=${register ? null : 'hidden'}"  id="registrationForm">
+            <div th:attrappend="hidden=${!register} ? 'hidden'" id="registrationForm">
                 <h2 class="text-center">Registration</h2>
                 <form th:action="@{/register}" th:object="${userTo}" method="post">
-                    <p th:if="${#fields.hasErrors('*')}" th:text="${errors}"></p>
                     <input th:replace="~{fragments/inputField :: input('Name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('Email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('Password', 'password', 'password')}"/>
                     <button type="submit" class="btn btn-primary btn-block">Register</button>
                 </form>
-                <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1">Login
-                </button>
+                <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1">Login</button>
             </div>
         </div>
     </div>
 </div>
-<script href="web" th:src="@{webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+<script th:src="@{webjars/bootstrap/js/bootstrap.min.js}" defer></script>
 <script th:src="@{resources/script.js}" defer></script>
 </body>
 </html>
