@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/headTag :: head('Registration')}"></head>
 <body>
 <div class="container">
@@ -14,10 +15,12 @@
 
             <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
                 <h2 class="text-center">[[#{common.login}]]
-                    <span th:onclick="'javascript:login(\'user@gmail.com\', \'user\')'" class="badge badge-pill badge-success">U</span>
-                    <span th:onclick="'javascript:login(\'admin@gmail.com\', \'admin\')'" class="badge badge-pill badge-warning">A</span>
+                    <span th:onclick="'javascript:login(\'user@gmail.com\', \'user\')'"
+                          class="badge badge-pill badge-success">U</span>
+                    <span th:onclick="'javascript:login(\'admin@gmail.com\', \'admin\')'"
+                          class="badge badge-pill badge-warning">A</span>
                 </h2>
-                <form name="loginForm" th:action="@{/login}" method="post">
+                <form name="loginForm" th:action="@{/profile/login}" method="post">
                     <div class="form-group">
                         <label for="loginEmail" th:text="#{userTo.email}">Email</label>
                         <input class="form-control" id="loginEmail" type="text" name="username"/>
@@ -33,22 +36,28 @@
                 </button>
             </div>
 
-            <div th:attrappend="hidden=${!register} ? 'hidden'" id="registrationEl">
-                <h2 class="text-center" th:text="#{userTo.signup}">Sign up</h2>
-                <form name="registrationForm" th:action="@{/register}" th:object="${userTo}" method="post">
+            <div th:with="anonymous=${#authorization.expr('isAnonymous()')}" th:attrappend="hidden=${!register} ? 'hidden'"
+                 id="registrationEl">
+                <h2 class="text-center" th:text="${anonymous} ? #{userTo.signup} : #{userTo.update}">Sign up</h2>
+                <form name="registrationForm" th:action="${anonymous} ? @{/register} : @{/profile}" th:object="${userTo}"
+                      method="post">
                     <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
-                    <button type="submit" class="btn btn-primary btn-block" th:text="#{common.signup}">Register</button>
+                    <button type="submit" class="btn btn-primary btn-block"
+                            th:text="${anonymous} ? #{common.signup} : #{common.update}">Register
+                    </button>
                 </form>
-                <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1"
-                        th:text="#{userTo.login}">User Login
-                </button>
+                <div sec:authorize="isAnonymous()">
+                    <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1"
+                            th:text="#{userTo.login}">User Login
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script th:src="@{webjars/bootstrap/js/bootstrap.min.js}" defer></script>
-<script th:src="@{resources/script.js}" defer></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+<script th:src="@{/resources/script.js}" defer></script>
 </body>
 </html>

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -58,6 +59,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public SpringTemplateEngine templateEngine() {
         final var templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
     }
 
@@ -72,6 +74,7 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    @Description("Resource Bundle Message Source")
     public MessageSource messageSource() {
         final var messageSource = new ResourceBundleMessageSource();
         messageSource.setDefaultEncoding("UTF-8");

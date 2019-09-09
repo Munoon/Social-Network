@@ -22,26 +22,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/register")
+                .antMatchers("/profile/login", "/profile/register")
                 .anonymous()
                 .and()
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/rest/**", "/**")
                 .authenticated()
                 .and()
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/rest/admin/**", "/admin/**")
                 .hasRole("ADMIN")
                 .and()
-            .formLogin()
-                .loginPage("/login")
+                .formLogin()
+                .loginPage("/profile/login")
                 .defaultSuccessUrl("/profile", true)
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/profile/login")
                 .and()
-            .logout()
-                .logoutSuccessUrl("/login?logout")
+                .logout()
+                .logoutUrl("/profile/logout")
+                .logoutSuccessUrl("/profile/login?logout")
                 .and()
-            .csrf().disable();
+                .csrf().disable();
     }
 
     @Override

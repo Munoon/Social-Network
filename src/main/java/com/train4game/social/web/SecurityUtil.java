@@ -1,7 +1,7 @@
 package com.train4game.social.web;
 
 import com.train4game.social.AuthorizedUser;
-import com.train4game.social.model.User;
+import com.train4game.social.to.UserTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -25,8 +25,8 @@ public class SecurityUtil {
         return user;
     }
 
-    public static User authUser() {
-        return getAuthorizedUser().getUser();
+    public static UserTo authUser() {
+        return getAuthorizedUser().getUserTo();
     }
 
     public static int authUserId() {
