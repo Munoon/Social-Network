@@ -26,27 +26,31 @@ public class ProfileController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        return loginPage(model, new UserTo(), false);
+        loginPage(model, new UserTo(), false);
+        return "login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        return loginPage(model, new UserTo(), true);
+        loginPage(model, new UserTo(), true);
+        return "login";
     }
 
     @PostMapping("/register")
     public String register(@Valid UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
         if (result.hasErrors()) {
-            return loginPage(model, userTo, true);
+            loginPage(model, userTo, true);
+            return "login";
         }
         userService.create(createNewFromTo(userTo));
         sessionStatus.setComplete();
-        return "redirect:/profile";
+        return "redirect:/profile/login?email=" + userTo.getEmail();
     }
 
     @GetMapping
     public String profile(@AuthenticationPrincipal AuthorizedUser authUser, Model model) {
-        return loginPage(model, authUser.getUserTo(), true);
+        loginPage(model, authUser.getUserTo(), false);
+        return "user";
     }
 
     @PostMapping
@@ -54,8 +58,8 @@ public class ProfileController {
                                 Model model, @AuthenticationPrincipal AuthorizedUser authUser,
                                 SessionStatus status) {
         if (result.hasErrors()) {
-            loginPage(model, userTo, true);
-            return "login";
+            loginPage(model, userTo, false);
+            return "user";
         }
         userTo.setId(authUser.getId());
         userService.update(userTo);
@@ -64,9 +68,8 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-    private String loginPage(Model model, UserTo userTo, boolean register) {
+    private void loginPage(Model model, UserTo userTo, boolean register) {
         model.addAttribute("userTo", userTo);
         model.addAttribute("register", register);
-        return "login";
     }
 }

@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Users</title>
-</head>
+<head th:replace="~{fragments/headTag :: head('Profile')}"></head>
 <body>
-    <span th:text="${user.name}">Username</span>
-    <span th:text="${user.email}">user@gmail.com</span>
-    <span th:text="${user.enabled}">true</span>
-    <span th:text="${user.registered}">2019-09-04 22:04:09.15078</span>
-    <span th:text="${user.roles}">ROLE_ADMIN</span>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" th:value="#{common.logout}">
-    </form>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-5 mx-auto border rounded p-3">
+            <h2 class="text-center" th:text="#{userTo.update}">Sign up</h2>
+            <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
+                <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
+                <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
+                <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
+                <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
+                    Update
+                </button>
+                <button type="button" onclick="logout()" th:text="#{common.logout}" class="btn btn-danger btn-block">
+                    Logout
+                </button>
+            </form>
+            <form id="logoutForm" th:action="@{/profile/logout}" method="post" hidden></form>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+<script th:src="@{/resources/script.js}" defer></script>
 </body>
 </html>

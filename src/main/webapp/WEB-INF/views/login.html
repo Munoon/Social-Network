@@ -22,7 +22,7 @@
                     <input type="hidden" name="_csrf" value="32e9ae18-76b9-4330-a8b6-08721283d048"/>
                     <div class="form-group">
                         <label for="loginEmail" th:text="#{userTo.email}">Email</label>
-                        <input class="form-control" id="loginEmail" type="text" name="username"/>
+                        <input class="form-control" id="loginEmail" th:value="${param.email}" type="text" name="username"/>
                     </div>
                     <div class="form-group">
                         <label for="loginPassword" th:text="#{userTo.password}">Password</label>
@@ -30,7 +30,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" th:text="#{common.login}">Login</button>
                 </form>
-                <button class="btn btn-danger btn-primary btn-block mt-1" onclick="showRegister()"
+                <button class="btn btn-secondary btn-block mt-1" onclick="showRegister()"
                         th:text="#{userTo.signup}">User Sign up
                 </button>
             </div>
@@ -38,25 +38,20 @@
             <div th:with="anonymous=${#authorization.expr('isAnonymous()')}"
                  th:attrappend="hidden=${!register} ? 'hidden'"
                  id="registrationEl">
-                <h2 class="text-center" th:text="${anonymous} ? #{userTo.signup} : #{userTo.update}">Sign up</h2>
-                <form name="registrationForm" th:action="${anonymous} ? @{/register} : @{/profile}"
+                <h2 class="text-center" th:text="#{userTo.signup}">Sign up</h2>
+                <form name="registrationForm" th:action="@{/profile/register}"
                       th:object="${userTo}"
                       method="post">
                     <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
                     <button type="submit" class="btn btn-primary btn-block"
-                            th:text="${anonymous} ? #{common.signup} : #{common.update}">Register
-                    </button>
-                    <button th:if="${!anonymous}" type="button" onclick="logout()" th:text="#{common.logout}" class="btn btn-danger btn-block">
+                            th:text="#{common.signup}">Register
                     </button>
                 </form>
-                <form id="logoutForm" th:if="${!anonymous}" th:action="@{/profile/logout}" hidden></form>
-                <div sec:authorize="isAnonymous()">
-                    <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1"
-                            th:text="#{userTo.login}">User Login
-                    </button>
-                </div>
+                <button onclick="showLogin()" class="btn btn-secondary btn-block mt-1"
+                        th:text="#{userTo.login}">User Login
+                </button>
             </div>
         </div>
     </div>
