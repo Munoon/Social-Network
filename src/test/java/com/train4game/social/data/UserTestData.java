@@ -1,6 +1,7 @@
 package com.train4game.social.data;
 
 import com.train4game.social.model.User;
+import com.train4game.social.to.UserTo;
 
 import java.util.Arrays;
 
@@ -13,6 +14,10 @@ public class UserTestData {
     public static final String ADMIN_EMAIL = "admin@gmail.com";
     public static final User ADMIN = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "admin", ROLE_ADMIN);
     public static final User USER = new User(ADMIN_ID + 1, "User", "user@gmail.com", "user", ROLE_USER);
+
+    public static UserTo createNewUserTo() {
+        return new UserTo(null, "UserTo", "userto@gmail.com", "userTo");
+    }
 
     public static void assertMatch(User actual, User expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered");
