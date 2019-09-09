@@ -45,7 +45,10 @@
                     <button type="submit" class="btn btn-primary btn-block"
                             th:text="${anonymous} ? #{common.signup} : #{common.update}">Register
                     </button>
+                    <button th:if="${!anonymous}" type="button" onclick="logout()" th:text="#{common.logout}" class="btn btn-danger btn-block">
+                    </button>
                 </form>
+                <form id="logoutForm" th:if="${!anonymous}" th:action="@{/profile/logout}" hidden></form>
                 <div sec:authorize="isAnonymous()">
                     <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1"
                             th:text="#{userTo.login}">User Login
