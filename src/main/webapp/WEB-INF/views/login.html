@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/headTag :: head('Registration')}"></head>
+<body>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-5 mx-auto border rounded p-3">
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+
+            <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
+                <h2 class="text-center">[[#{common.login}]]
+                    <span onclick="login('user@gmail.com', 'user1')" class="badge badge-pill badge-success">U</span>
+                    <span onclick="login('admin@gmail.com', 'admin')" class="badge badge-pill badge-warning">A</span>
+                </h2>
+                <form name="loginForm" th:action="@{/profile/login}" method="post">
+                    <div class="form-group">
+                        <label for="loginEmail" th:text="#{userTo.email}">Email</label>
+                        <input class="form-control" id="loginEmail" type="text" name="username"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword" th:text="#{userTo.password}">Password</label>
+                        <input class="form-control" id="loginPassword" type="password" name="password"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" th:text="#{common.login}">Login</button>
+                </form>
+                <button class="btn btn-danger btn-primary btn-block mt-1" onclick="showRegister()"
+                        th:text="#{userTo.signup}">User Sign up
+                </button>
+            </div>
+
+            <div th:with="anonymous=${#authorization.expr('isAnonymous()')}" th:attrappend="hidden=${!register} ? 'hidden'"
+                 id="registrationEl">
+                <h2 class="text-center" th:text="${anonymous} ? #{userTo.signup} : #{userTo.update}">Sign up</h2>
+                <form name="registrationForm" th:action="${anonymous} ? @{/register} : @{/profile}" th:object="${userTo}"
+                      method="post">
+                    <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
+                    <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
+                    <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
+                    <button type="submit" class="btn btn-primary btn-block"
+                            th:text="${anonymous} ? #{common.signup} : #{common.update}">Register
+                    </button>
+                </form>
+                <div sec:authorize="isAnonymous()">
+                    <button onclick="showLogin()" class="btn btn-danger btn-primary btn-block mt-1"
+                            th:text="#{userTo.login}">User Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+<script th:src="@{/resources/script.js}" defer></script>
+</body>
+</html>
