@@ -1,5 +1,6 @@
 const registrationEl = document.getElementById("registrationEl");
 const loginEl = document.getElementById("loginEl");
+const loginForm = document.forms['loginForm'];
 
 function showRegister() {
     registrationEl.hidden = false;
@@ -12,9 +13,10 @@ function showLogin() {
 }
 
 function login(email, pass) {
-    const inputs = document.forms['loginForm'].elements;
+    const inputs = loginForm.elements;
     inputs['username'].value = email;
     inputs['password'].value = pass;
+    loginForm.submit();
 }
 
 
