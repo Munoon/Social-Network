@@ -1,4 +1,7 @@
 # Social-Network
+[![Build Status](https://travis-ci.org/Train4Game/Social-Network.svg?branch=master)](https://travis-ci.org/Train4Game/Social-Network)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/65bb5369231c42dd81c61e8adb49bc3f)](https://www.codacy.com/manual/Train4Game/Social-Network?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Train4Game/Social-Network&amp;utm_campaign=Badge_Grade)
+
 [DEVELOPING] Social Network on Java using Spring
 
 # Instalation
