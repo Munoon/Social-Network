@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.LocaleResolver;
@@ -76,10 +76,10 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     @Description("Resource Bundle Message Source")
     public MessageSource messageSource() {
-        final var messageSource = new ResourceBundleMessageSource();
+        final var messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setFallbackToSystemLocale(false);
-        messageSource.setBasenames("app");
+        messageSource.setBasenames("classpath:messages/app");
         return messageSource;
     }
 

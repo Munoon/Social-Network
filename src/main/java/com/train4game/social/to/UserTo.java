@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @StringFieldsMatch(first = "password", second = "confirmPassword",
-        message = "error.passwordsDontMatch")
+        message = "{error.passwordsDontMatch}")
 public class UserTo {
     Integer id;
 
