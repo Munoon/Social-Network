@@ -15,10 +15,11 @@
 
             <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
                 <h2 class="text-center">[[#{common.login}]]
-                    <span onclick="login('user@gmail.com', 'user1')" class="badge badge-pill badge-success">U</span>
+                    <span onclick="login('user@gmail.com', 'user')" class="badge badge-pill badge-success">U</span>
                     <span onclick="login('admin@gmail.com', 'admin')" class="badge badge-pill badge-warning">A</span>
                 </h2>
                 <form name="loginForm" th:action="@{/profile/login}" method="post">
+                    <input type="hidden" name="_csrf" value="32e9ae18-76b9-4330-a8b6-08721283d048"/>
                     <div class="form-group">
                         <label for="loginEmail" th:text="#{userTo.email}">Email</label>
                         <input class="form-control" id="loginEmail" type="text" name="username"/>
@@ -34,10 +35,12 @@
                 </button>
             </div>
 
-            <div th:with="anonymous=${#authorization.expr('isAnonymous()')}" th:attrappend="hidden=${!register} ? 'hidden'"
+            <div th:with="anonymous=${#authorization.expr('isAnonymous()')}"
+                 th:attrappend="hidden=${!register} ? 'hidden'"
                  id="registrationEl">
                 <h2 class="text-center" th:text="${anonymous} ? #{userTo.signup} : #{userTo.update}">Sign up</h2>
-                <form name="registrationForm" th:action="${anonymous} ? @{/register} : @{/profile}" th:object="${userTo}"
+                <form name="registrationForm" th:action="${anonymous} ? @{/register} : @{/profile}"
+                      th:object="${userTo}"
                       method="post">
                     <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
