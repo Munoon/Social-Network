@@ -1,6 +1,9 @@
 package com.train4game.social.web.validators;
 
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,6 +12,9 @@ public class StringFieldsMatchValidator implements ConstraintValidator<StringFie
     private String first;
     private String second;
     private String message;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public void initialize(StringFieldsMatch constraintAnnotation) {
@@ -25,7 +31,9 @@ public class StringFieldsMatchValidator implements ConstraintValidator<StringFie
             Object secondValue = new BeanWrapperImpl(obj).getPropertyValue(second);
             valid = validate(firstValue, secondValue);
             if (!valid) {
-                context.buildConstraintViolationWithTemplate(message)
+                context.
+                        buildConstraintViolationWithTemplate(messageSource.getMessage(
+                                message, null, LocaleContextHolder.getLocale()))
                         .addPropertyNode(first)
                         .addConstraintViolation()
                         .disableDefaultConstraintViolation();
