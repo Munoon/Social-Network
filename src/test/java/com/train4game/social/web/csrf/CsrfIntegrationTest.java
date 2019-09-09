@@ -2,6 +2,7 @@ package com.train4game.social.web.csrf;
 
 import com.train4game.social.config.AppConfig;
 import com.train4game.social.config.MvcConfig;
+import com.train4game.social.model.User;
 import com.train4game.social.to.UserTo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.annotation.PostConstruct;
 
-import static com.train4game.social.data.UserTestData.USER;
-import static com.train4game.social.data.UserTestData.createNewUserTo;
+import static com.train4game.social.TestUtil.userAuth;
+import static com.train4game.social.data.UserTestData.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,6 +75,31 @@ public class CsrfIntegrationTest {
                 .param("username", userTo.getEmail())
                 .param("password", userTo.getPassword())
                 .param("email", userTo.getEmail())
+                .with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateUserToWithoutCsrf() throws Exception {
+        User user = new User(ADMIN);
+        user.setEmail("newemail@gmail.com");
+        mockMvc.perform(post(URL)
+                .param("username", user.getEmail())
+                .param("password", user.getPassword())
+                .param("email", user.getEmail())
+                .with(userAuth(ADMIN)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void updateUserToWithCsrf() throws Exception {
+        User user = new User(ADMIN);
+        user.setEmail("newemail@gmail.com");
+        mockMvc.perform(post(URL)
+                .param("username", user.getEmail())
+                .param("password", user.getPassword())
+                .param("email", user.getEmail())
+                .with(userAuth(ADMIN))
                 .with(csrf()))
                 .andExpect(status().isOk());
     }
