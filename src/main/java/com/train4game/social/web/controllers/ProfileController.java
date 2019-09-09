@@ -46,8 +46,7 @@ public class ProfileController {
 
     @GetMapping
     public String profile(@AuthenticationPrincipal AuthorizedUser authUser, Model model) {
-        loginPage(model, authUser.getUserTo(), true);
-        return "login";
+        return loginPage(model, authUser.getUserTo(), true);
     }
 
     @PostMapping

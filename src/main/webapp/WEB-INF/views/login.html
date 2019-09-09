@@ -15,10 +15,8 @@
 
             <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
                 <h2 class="text-center">[[#{common.login}]]
-                    <span th:onclick="'javascript:login(\'user@gmail.com\', \'user\')'"
-                          class="badge badge-pill badge-success">U</span>
-                    <span th:onclick="'javascript:login(\'admin@gmail.com\', \'admin\')'"
-                          class="badge badge-pill badge-warning">A</span>
+                    <span onclick="login('user@gmail.com', 'user1')" class="badge badge-pill badge-success">U</span>
+                    <span onclick="login('admin@gmail.com', 'admin')" class="badge badge-pill badge-warning">A</span>
                 </h2>
                 <form name="loginForm" th:action="@{/profile/login}" method="post">
                     <div class="form-group">
