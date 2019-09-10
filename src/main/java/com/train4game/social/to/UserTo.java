@@ -1,8 +1,12 @@
 package com.train4game.social.to;
 
+import com.train4game.social.web.validators.StringFieldsMatch;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@StringFieldsMatch(first = "password", second = "confirmPassword",
+        message = "{error.passwordsDontMatch}")
 public class UserTo {
     Integer id;
 
@@ -17,6 +21,10 @@ public class UserTo {
     @NotBlank
     @Size(min = 4, max = 100)
     String password;
+
+    @NotBlank
+    @Size(min = 4, max = 100)
+    String confirmPassword;
 
     public UserTo() {
     }
@@ -58,6 +66,14 @@ public class UserTo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     @Override
