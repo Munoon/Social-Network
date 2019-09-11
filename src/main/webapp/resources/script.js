@@ -15,7 +15,7 @@ function showLogin() {
 
 function login(email, pass) {
     const inputs = loginForm.elements;
-    inputs['username'].value = email;
+    inputs['email'].value = email;
     inputs['password'].value = pass;
     loginForm.submit();
 }
