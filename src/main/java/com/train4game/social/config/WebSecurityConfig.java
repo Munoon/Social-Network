@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/profile/login")
+                .usernameParameter("email")
                 .defaultSuccessUrl("/profile", true)
                 .loginProcessingUrl("/profile/login")
                 .and()

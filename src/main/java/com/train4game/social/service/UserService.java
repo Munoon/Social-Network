@@ -18,8 +18,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static com.train4game.social.util.UserUtil.updateUserFromTo;
-
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
@@ -58,7 +56,9 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void update(UserTo userTo) {
         User user = get(userTo.getId());
-        repository.save(prepareToSave(updateUserFromTo(user, userTo)));
+        user.setName(userTo.getName());
+        user.setEmail(userTo.getEmail());
+        repository.save(prepareToSave(user));
     }
 
     @Override

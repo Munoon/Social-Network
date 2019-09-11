@@ -1,12 +1,13 @@
 package com.train4game.social.to;
 
+import com.train4game.social.View;
 import com.train4game.social.web.validators.StringFieldsMatch;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @StringFieldsMatch(first = "password", second = "confirmPassword",
-        message = "{error.passwordsDontMatch}")
+        message = "{error.passwordsDontMatch}", groups = View.UserRegister.class)
 public class UserTo {
     Integer id;
 
@@ -18,12 +19,12 @@ public class UserTo {
     @Size(max = 200)
     String email;
 
-    @NotBlank
-    @Size(min = 4, max = 100)
+    @NotBlank(groups = View.UserRegister.class)
+    @Size(min = 4, max = 100, groups = View.UserRegister.class)
     String password;
 
-    @NotBlank
-    @Size(min = 4, max = 100)
+    @NotBlank(groups = View.UserRegister.class)
+    @Size(min = 4, max = 100, groups = View.UserRegister.class)
     String confirmPassword;
 
     public UserTo() {
