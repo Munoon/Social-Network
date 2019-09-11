@@ -12,11 +12,4 @@ public class UserUtil {
     public static UserTo asTo(User user) {
         return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
-
-    public static User updateUserFromTo(User user, UserTo userTo) {
-        user.setId(userTo.getId());
-        user.setEmail(userTo.getEmail());
-        user.setPassword(userTo.getPassword());
-        return user;
-    }
 }

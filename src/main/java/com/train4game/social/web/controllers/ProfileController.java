@@ -1,6 +1,7 @@
 package com.train4game.social.web.controllers;
 
 import com.train4game.social.AuthorizedUser;
+import com.train4game.social.View;
 import com.train4game.social.service.UserService;
 import com.train4game.social.to.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
-
-import javax.validation.Valid;
 
 import static com.train4game.social.util.UserUtil.createNewFromTo;
 
@@ -37,7 +37,7 @@ public class ProfileController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
+    public String register(@Validated(View.UserRegister.class) UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
         if (result.hasErrors()) {
             loginPage(model, userTo, true);
             return "login";
@@ -54,7 +54,7 @@ public class ProfileController {
     }
 
     @PostMapping
-    public String updateProfile(@Valid @ModelAttribute UserTo userTo, BindingResult result,
+    public String updateProfile(@Validated @ModelAttribute UserTo userTo, BindingResult result,
                                 Model model, @AuthenticationPrincipal AuthorizedUser authUser,
                                 SessionStatus status) {
         if (result.hasErrors()) {

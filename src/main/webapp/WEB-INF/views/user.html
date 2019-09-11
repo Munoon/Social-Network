@@ -9,15 +9,15 @@
             <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
                 <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
-                <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
                 <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
                     Update
                 </button>
-                <button type="button" onclick="logout()" th:text="#{common.logout}" class="btn btn-danger btn-block">
+            </form>
+            <form id="logoutForm" th:action="@{/profile/logout}" method="post">
+                <button type="submit" class="btn btn-danger btn-block mt-1" th:text="#{common.logout}">
                     Logout
                 </button>
             </form>
-            <form id="logoutForm" th:action="@{/profile/logout}" method="post" hidden></form>
         </div>
     </div>
 </div>
