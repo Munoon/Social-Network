@@ -2,6 +2,8 @@ package com.train4game.social.web.controllers;
 
 import com.train4game.social.AuthorizedUser;
 import com.train4game.social.View;
+import com.train4game.social.model.Recaptcha;
+import com.train4game.social.service.RecaptchaService;
 import com.train4game.social.service.UserService;
 import com.train4game.social.to.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.train4game.social.util.UserUtil.createNewFromTo;
 
@@ -23,6 +24,9 @@ import static com.train4game.social.util.UserUtil.createNewFromTo;
 public class ProfileController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RecaptchaService recaptchaService;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -37,11 +41,20 @@ public class ProfileController {
     }
 
     @PostMapping("/register")
-    public String register(@Validated(View.UserRegister.class) UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
+    public String register(@Validated(View.UserRegister.class) UserTo userTo,
+                           @RequestParam(name="g-recaptcha-response") String recaptchaResponse,
+                           BindingResult result, Model model, SessionStatus sessionStatus, HttpServletRequest req) {
         if (result.hasErrors()) {
             loginPage(model, userTo, true);
             return "login";
         }
+
+        Recaptcha recaptcha = recaptchaService.verifyRecaptcha(req.getRemoteAddr(), recaptchaResponse);
+        if (!recaptcha.isSuccess()) {
+            loginPage(model, userTo, true);
+            return "login";
+        }
+
         userService.create(createNewFromTo(userTo));
         sessionStatus.setComplete();
         return "redirect:/profile/login?email=" + userTo.getEmail();
