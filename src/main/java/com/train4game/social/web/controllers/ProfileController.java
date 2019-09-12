@@ -25,25 +25,24 @@ public class ProfileController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RecaptchaService recaptchaService;
-
     @GetMapping("/login")
     public String login(Model model) {
-        loginPage(model, new UserTo(), false);
+        loginPage(model, new UserTo());
         return "login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        loginPage(model, new UserTo(), true);
+        registerPage(model, new UserTo());
         return "login";
     }
 
     @PostMapping("/register")
     public String register(@Validated(View.UserRegister.class) UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
         if (result.hasErrors()) {
-            loginPage(model, userTo, true);
+            registerPage(model, userTo);
+            if (result.getFieldError("reCaptchaResponse") != null)
+                model.addAttribute("captchaError", true);
             return "login";
         }
         userService.create(createNewFromTo(userTo));
@@ -53,7 +52,7 @@ public class ProfileController {
 
     @GetMapping
     public String profile(@AuthenticationPrincipal AuthorizedUser authUser, Model model) {
-        loginPage(model, authUser.getUserTo(), false);
+        loginPage(model, authUser.getUserTo());
         return "user";
     }
 
@@ -62,7 +61,9 @@ public class ProfileController {
                                 Model model, @AuthenticationPrincipal AuthorizedUser authUser,
                                 SessionStatus status) {
         if (result.hasErrors()) {
-            loginPage(model, userTo, false);
+            loginPage(model, userTo);
+            if (result.getFieldError("reCaptchaResponse") != null)
+                model.addAttribute("captchaError", true);
             return "user";
         }
         userTo.setId(authUser.getId());
@@ -72,8 +73,17 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-    private void loginPage(Model model, UserTo userTo, boolean register) {
+    private void loginPage(Model model, UserTo userTo) {
+        loginOrRegisterPage(model, userTo, false);
+    }
+
+    private void registerPage(Model model, UserTo userTo) {
+        loginOrRegisterPage(model, userTo, true);
+    }
+
+    private void loginOrRegisterPage(Model model, UserTo userTo, boolean register) {
         model.addAttribute("userTo", userTo);
         model.addAttribute("register", register);
+        model.addAttribute("captchaError", false);
     }
 }

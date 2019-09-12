@@ -7,6 +7,9 @@
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
             <h2 class="text-center" th:text="#{userTo.update}">Sign up</h2>
+            <div th:if="${captchaError}" class="alert alert-danger">
+                Please, confirm captcha.
+            </div>
             <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
                 <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
