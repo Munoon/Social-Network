@@ -1,9 +1,14 @@
 package com.train4game.social.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.train4game.social.View;
+import com.train4game.social.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @StringFieldsMatch(first = "password", second = "confirmPassword",
@@ -26,6 +31,10 @@ public class UserTo {
     @NotBlank(groups = View.UserRegister.class)
     @Size(min = 4, max = 100, groups = View.UserRegister.class)
     String confirmPassword;
+
+    @NotEmpty
+    @ValidReCaptcha
+    private String reCaptchaResponse;
 
     public UserTo() {
     }
@@ -75,6 +84,14 @@ public class UserTo {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getReCaptchaResponse() {
+        return reCaptchaResponse;
+    }
+
+    public void setReCaptchaResponse(String reCaptchaResponse) {
+        this.reCaptchaResponse = reCaptchaResponse;
     }
 
     @Override

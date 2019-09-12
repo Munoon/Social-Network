@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class RecaptchaService {
     private static final String RECAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify";
@@ -19,9 +21,16 @@ public class RecaptchaService {
     @Autowired
     private RestOperations restOperations;
 
-    public Recaptcha verifyRecaptcha(String ip, String recaptchaResponse) {
-        String url = RECAPTCHA_URL + String.format("?secret=%s&response=%s&remoteip=%s", recaptchaSecret, recaptchaResponse, ip);
+    @Autowired
+    private HttpServletRequest req;
+
+    public Recaptcha verifyRecaptcha(String recaptchaResponse) {
+        String url = RECAPTCHA_URL + String.format("?secret=%s&response=%s&remoteip=%s", recaptchaSecret, recaptchaResponse, req.getRemoteAddr());
         log.info("Make get request on link: {}", url);
         return restOperations.getForObject(url, Recaptcha.class);
+    }
+
+    public boolean isVerifyRecaptcha(String recaptchaResponse) {
+        return verifyRecaptcha(recaptchaResponse).isSuccess();
     }
 }

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/headTag :: head('Profile')}"></head>
 <body>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <div class="container">
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
@@ -9,6 +10,7 @@
             <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
                 <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
+                <div th:replace="~{fragments/captchaField :: input}"/>
                 <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
                     Update
                 </button>

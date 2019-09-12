@@ -41,20 +41,11 @@ public class ProfileController {
     }
 
     @PostMapping("/register")
-    public String register(@Validated(View.UserRegister.class) UserTo userTo,
-                           @RequestParam(name="g-recaptcha-response") String recaptchaResponse,
-                           BindingResult result, Model model, SessionStatus sessionStatus, HttpServletRequest req) {
+    public String register(@Validated(View.UserRegister.class) UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
         if (result.hasErrors()) {
             loginPage(model, userTo, true);
             return "login";
         }
-
-        Recaptcha recaptcha = recaptchaService.verifyRecaptcha(req.getRemoteAddr(), recaptchaResponse);
-        if (!recaptcha.isSuccess()) {
-            loginPage(model, userTo, true);
-            return "login";
-        }
-
         userService.create(createNewFromTo(userTo));
         sessionStatus.setComplete();
         return "redirect:/profile/login?email=" + userTo.getEmail();
