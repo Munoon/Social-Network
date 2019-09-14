@@ -16,7 +16,10 @@ public class RecaptchaService {
     private final Logger log = LoggerFactory.getLogger(RecaptchaService.class);
 
     @Value("${google.recaptcha.secret}")
-    String recaptchaSecret;
+    private String recaptchaSecret;
+
+    @Value("${google.recaptcha.html}")
+    private String recaptchaHtml;
 
     @Autowired
     private RestOperations restOperations;
@@ -32,5 +35,9 @@ public class RecaptchaService {
 
     public boolean isVerifyRecaptcha(String recaptchaResponse) {
         return verifyRecaptcha(recaptchaResponse).isSuccess();
+    }
+
+    public String getRecaptchaHtml() {
+        return recaptchaHtml;
     }
 }

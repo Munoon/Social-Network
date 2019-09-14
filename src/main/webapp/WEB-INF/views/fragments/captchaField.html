@@ -1,5 +1,5 @@
 <th:block th:fragment="input" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group">
-        <div class="g-recaptcha" th:data-sitekey=""/>
+        <div class="g-recaptcha" th:attr="data-sitekey=${@recaptchaService.getRecaptchaHtml()}"></div>
     </div>
 </th:block>
