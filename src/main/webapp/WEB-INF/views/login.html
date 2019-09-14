@@ -19,8 +19,8 @@
 
             <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
                 <h2 class="text-center">[[#{common.login}]]
-                    <span onclick="login('user@gmail.com', 'user')" class="badge badge-pill badge-success">U</span>
-                    <span onclick="login('admin@gmail.com', 'admin')" class="badge badge-pill badge-warning">A</span>
+                    <span onclick="login('user@gmail.com', 'user')" class="badge badge-pill badge-success user-button">U</span>
+                    <span onclick="login('admin@gmail.com', 'admin')" class="badge badge-pill badge-warning user-button">A</span>
                 </h2>
                 <form name="loginForm" th:action="@{/profile/login}" method="post">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
