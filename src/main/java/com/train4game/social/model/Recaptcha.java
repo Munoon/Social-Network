@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.train4game.social.model.Recaptcha.ErrorCode.InvalidResponse;
+import static com.train4game.social.model.Recaptcha.ErrorCode.MissingResponse;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Recaptcha {
@@ -24,6 +27,18 @@ public class Recaptcha {
         this.challengeTs = challengeTs;
         this.hostname = hostname;
         this.errorCodes = errorCodes;
+    }
+
+    public boolean hasClientError() {
+        if (errorCodes == null)
+            return false;
+
+        for (ErrorCode code : errorCodes) {
+            if (code.equals(MissingResponse) || code.equals(InvalidResponse))
+                return true;
+        }
+
+        return false;
     }
 
     enum ErrorCode {

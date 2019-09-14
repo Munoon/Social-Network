@@ -50,6 +50,10 @@
 
         <!-- ANNOTATIONS -->
         <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+
+        <!-- OTHER -->
+        <glassfish.version>3.0.0</glassfish.version>
+        <guava.version>28.1-jre</guava.version>
     </properties>
 
     <build>
@@ -285,13 +289,19 @@
             <version>${javax.annotation-api.version}</version>
         </dependency>
 
+        <!-- OTHER -->
         <!-- Necessary for hibernate validator -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.el</artifactId>
-            <version>3.0.0</version>
+            <version>${glassfish.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
