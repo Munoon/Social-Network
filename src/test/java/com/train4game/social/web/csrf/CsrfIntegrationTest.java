@@ -19,7 +19,7 @@ public class CsrfIntegrationTest extends AbstractWebTest {
     @Test
     public void loginWithoutCsrf() throws Exception {
         mockMvc.perform(post(URL + "login")
-                .param("username", USER.getEmail())
+                .param("email", USER.getEmail())
                 .param("password", USER.getPassword()))
                 .andExpect(status().isForbidden());
     }
@@ -27,7 +27,7 @@ public class CsrfIntegrationTest extends AbstractWebTest {
     @Test
     public void loginWithCsrf() throws Exception {
         mockMvc.perform(post(URL + "login")
-                .param("username", USER.getEmail())
+                .param("email", USER.getEmail())
                 .param("password", USER.getPassword())
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection());
@@ -37,9 +37,8 @@ public class CsrfIntegrationTest extends AbstractWebTest {
     public void registerWithoutCsrf() throws Exception {
         UserTo userTo = createNewUserTo();
         mockMvc.perform(post(URL + "register")
-                .param("username", userTo.getEmail())
-                .param("password", userTo.getPassword())
-                .param("email", userTo.getEmail()))
+                .param("email", userTo.getEmail())
+                .param("password", userTo.getPassword()))
                 .andExpect(status().isForbidden());
     }
 
@@ -47,7 +46,6 @@ public class CsrfIntegrationTest extends AbstractWebTest {
     public void registerWithCsrf() throws Exception {
         UserTo userTo = createNewUserTo();
         mockMvc.perform(post(URL + "register")
-                .param("username", userTo.getEmail())
                 .param("password", userTo.getPassword())
                 .param("email", userTo.getEmail())
                 .with(csrf()))
@@ -59,9 +57,8 @@ public class CsrfIntegrationTest extends AbstractWebTest {
         User user = new User(ADMIN);
         user.setEmail("newemail@gmail.com");
         mockMvc.perform(post(URL)
-                .param("username", user.getEmail())
-                .param("password", user.getPassword())
                 .param("email", user.getEmail())
+                .param("password", user.getPassword())
                 .with(userAuth(ADMIN)))
                 .andExpect(status().isForbidden());
     }
@@ -71,9 +68,8 @@ public class CsrfIntegrationTest extends AbstractWebTest {
         User user = new User(ADMIN);
         user.setEmail("newemail@gmail.com");
         mockMvc.perform(post(URL)
-                .param("username", user.getEmail())
-                .param("password", user.getPassword())
                 .param("email", user.getEmail())
+                .param("password", user.getPassword())
                 .with(userAuth(ADMIN))
                 .with(csrf()))
                 .andExpect(status().isOk());

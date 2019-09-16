@@ -5,16 +5,12 @@ import com.train4game.social.service.UserService;
 import com.train4game.social.to.UserTo;
 import com.train4game.social.web.AbstractWebTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.train4game.social.data.UserTestData.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,7 +18,6 @@ class ProfileControllerTest extends AbstractWebTest {
     private static final String URL = "/profile/";
 
     @Autowired
-    @InjectMocks
     private RecaptchaService recaptchaService;
 
     @Autowired
@@ -32,9 +27,10 @@ class ProfileControllerTest extends AbstractWebTest {
     void registerInvalidReCaptcha() throws Exception {
         UserTo userTo = createNewUserTo();
         mockMvc.perform(post(URL + "register")
-                .param("username", userTo.getEmail())
-                .param("password", userTo.getPassword())
+                .param("name", userTo.getName())
                 .param("email", userTo.getEmail())
+                .param("password", userTo.getPassword())
+                .param("confirmPassword", userTo.getPassword())
                 .param("g-recaptcha-response", "invalid-resposne")
                 .with(csrf()))
                 .andExpect(model().hasErrors())
@@ -48,9 +44,10 @@ class ProfileControllerTest extends AbstractWebTest {
     void registerWithoutRecaptcha() throws Exception {
         UserTo userTo = createNewUserTo();
         mockMvc.perform(post(URL + "register")
-                .param("username", userTo.getEmail())
-                .param("password", userTo.getPassword())
+                .param("name", userTo.getName())
                 .param("email", userTo.getEmail())
+                .param("password", userTo.getPassword())
+                .param("confirmPassword", userTo.getPassword())
                 .with(csrf()))
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeHasFieldErrors("userTo", "reCaptchaResponse"))
@@ -65,9 +62,10 @@ class ProfileControllerTest extends AbstractWebTest {
         String validRecaptcha = "valid-recaptcha";
         when(recaptchaService.isVerifyRecaptcha(validRecaptcha)).thenReturn(true);
         mockMvc.perform(post(URL + "register")
-                .param("username", userTo.getEmail())
-                .param("password", userTo.getPassword())
+                .param("name", userTo.getName())
                 .param("email", userTo.getEmail())
+                .param("password", userTo.getPassword())
+                .param("confirmPassword", userTo.getPassword())
                 .param("g-recaptcha-response", validRecaptcha)
                 .with(csrf()))
                 .andExpect(status().isOk());

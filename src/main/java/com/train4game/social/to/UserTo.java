@@ -1,11 +1,8 @@
 package com.train4game.social.to;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.train4game.social.View;
 import com.train4game.social.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
