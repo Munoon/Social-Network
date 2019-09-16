@@ -22,3 +22,11 @@ CREATE TABLE user_roles
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE verification_tokens
+(
+    token CHAR(32) NOT NULL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    date_time TIMESTAMP DEFAULT now() NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+)
