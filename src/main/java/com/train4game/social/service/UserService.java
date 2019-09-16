@@ -18,6 +18,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.train4game.social.util.UserUtil.createNewFromTo;
+
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
@@ -51,6 +53,10 @@ public class UserService implements UserDetailsService {
     public void update(User user) {
         Assert.notNull(user, "User must be not null");
         repository.save(prepareToSave(user));
+    }
+
+    public User create(UserTo userTo) {
+        return repository.save(createNewFromTo(userTo));
     }
 
     @Transactional

@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
-import static com.train4game.social.util.UserUtil.createNewFromTo;
-
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
@@ -42,7 +40,7 @@ public class ProfileController {
             loginPage(model, userTo, true);
             return "login";
         }
-        userService.create(createNewFromTo(userTo));
+        userService.create(userTo);
         sessionStatus.setComplete();
         return "redirect:/profile/login?email=" + userTo.getEmail();
     }
