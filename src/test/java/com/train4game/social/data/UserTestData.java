@@ -12,15 +12,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserTestData {
     public static final int ADMIN_ID = User.START_SEQ;
     public static final String ADMIN_EMAIL = "admin@gmail.com";
-    public static final User ADMIN = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "admin", ROLE_ADMIN);
-    public static final User USER = new User(ADMIN_ID + 1, "User", "user@gmail.com", "user", ROLE_USER);
+    public static final User ADMIN = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "{noop}admin", ROLE_ADMIN);
+    public static final User USER = new User(ADMIN_ID + 1, "User", "user@gmail.com", "{noop}user", ROLE_USER);
 
     public static UserTo createNewUserTo() {
-        return new UserTo(null, "UserTo", "userto@gmail.com", "userTo");
+        return new UserTo(null, "New User", "newUser@gmail.com", "user");
+    }
+
+    public static User createNewUser() {
+        return new User(null, "New User", "newUser@gmail.com", "user", ROLE_USER);
     }
 
     public static void assertMatch(User actual, User expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "password");
     }
 
     public static void assertMatch(Iterable<User> actual, User... expected) {
@@ -28,6 +32,6 @@ public class UserTestData {
     }
 
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("registered").isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("registered", "password").isEqualTo(expected);
     }
 }
