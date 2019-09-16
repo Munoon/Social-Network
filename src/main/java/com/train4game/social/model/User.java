@@ -29,8 +29,8 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private Date registered = new Date();
 
-    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-    private boolean enabled = true;
+    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean enabled = false;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
