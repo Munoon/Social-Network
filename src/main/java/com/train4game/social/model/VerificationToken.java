@@ -22,7 +22,7 @@ public class VerificationToken {
     @Column(name = "date_time", updatable = false, nullable = false)
     private LocalDateTime dateTime = LocalDateTime.now();
 
-    public boolean isValid(LocalDateTime now) {
-        return now.isBefore(dateTime.plusMinutes(EXPIRATION));
+    public boolean isExpired(LocalDateTime now) {
+        return now.isAfter(dateTime.plusMinutes(EXPIRATION));
     }
 }
