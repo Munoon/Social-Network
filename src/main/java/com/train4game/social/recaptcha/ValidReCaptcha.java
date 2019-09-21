@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ TYPE, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 public @interface ValidReCaptcha {
-    String message() default "captcha.error";
+    String message() default "{captcha.error}";
 
     Class<?>[] groups() default {};
 
