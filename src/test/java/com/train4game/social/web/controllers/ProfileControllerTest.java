@@ -11,8 +11,7 @@ import static com.train4game.social.data.UserTestData.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class ProfileControllerTest extends AbstractWebTest {
     private static final String URL = "/profile/";
@@ -47,7 +46,7 @@ class ProfileControllerTest extends AbstractWebTest {
                 .param("name", userTo.getName())
                 .param("email", userTo.getEmail())
                 .param("password", userTo.getPassword())
-                .param("confirmPassword", userTo.getPassword())
+                .param("g-recaptcha-response", userTo.getPassword())
                 .with(csrf()))
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeHasFieldErrors("userTo", "reCaptchaResponse"))
@@ -68,8 +67,8 @@ class ProfileControllerTest extends AbstractWebTest {
                 .param("confirmPassword", userTo.getPassword())
                 .param("g-recaptcha-response", validRecaptcha)
                 .with(csrf()))
-                .andExpect(status().isOk());
+                .andExpect(redirectedUrl("/profile/login?email=" + userTo.getEmail()));
 
-        assertMatch(userService.getAll(), ADMIN, USER, createNewUser());
+        assertMatchIgnoreId(userService.getAll(), ADMIN, USER, createNewUser());
     }
 }

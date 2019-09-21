@@ -16,11 +16,11 @@ public class UserTestData {
     public static final User USER = new User(ADMIN_ID + 1, "User", "user@gmail.com", "{noop}user", ROLE_USER);
 
     public static UserTo createNewUserTo() {
-        return new UserTo(null, "New User", "newUser@gmail.com", "user");
+        return new UserTo(null, "New User", "newuser@gmail.com", "user");
     }
 
     public static User createNewUser() {
-        return new User(null, "New User", "newUser@gmail.com", "user", ROLE_USER);
+        return new User(null, "New User", "newuser@gmail.com", "user", ROLE_USER);
     }
 
     public static void assertMatch(User actual, User expected) {
@@ -33,5 +33,13 @@ public class UserTestData {
 
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("registered", "password").isEqualTo(expected);
+    }
+
+    public static void assertMatchIgnoreId(Iterable<User> actual, User... expected) {
+        assertMatchIgnoreId(actual, Arrays.asList(expected));
+    }
+
+    public static void assertMatchIgnoreId(Iterable<User> actual, Iterable<User> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields("registered", "password", "id").isEqualTo(expected);
     }
 }
