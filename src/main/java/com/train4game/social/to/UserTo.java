@@ -1,6 +1,7 @@
 package com.train4game.social.to;
 
 import com.train4game.social.View;
+import com.train4game.social.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
 
 import javax.validation.constraints.NotBlank;
@@ -26,6 +27,9 @@ public class UserTo {
     @NotBlank(groups = View.UserRegister.class)
     @Size(min = 4, max = 100, groups = View.UserRegister.class)
     String confirmPassword;
+
+    @ValidReCaptcha(groups = View.UserRegister.class)
+    private String reCaptchaResponse;
 
     public UserTo() {
     }
@@ -75,6 +79,14 @@ public class UserTo {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getReCaptchaResponse() {
+        return reCaptchaResponse;
+    }
+
+    public void setReCaptchaResponse(String reCaptchaResponse) {
+        this.reCaptchaResponse = reCaptchaResponse;
     }
 
     @Override

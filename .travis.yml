@@ -7,10 +7,23 @@ cache:
   directories:
     - $HOME/.m2
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get --yes remove postgresql\*
+  - sudo apt-get install -y postgresql-11 postgresql-client-11
+  - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
+  - sudo service postgresql restart 11
+
 # https://docs.travis-ci.com/user/database-setup/#PostgreSQL
 before_script:
   - psql -c 'create database social' -U postgres
   - psql -c 'create user "user"; grant all privileges on database social to "user"' -U postgres
+
+services:
+  - postgresql
+
+addons:
+  postgresql: "11.2"
 
 # https://docs.travis-ci.com/user/customizing-the-build#Building-Specific-Branches
 branches:
