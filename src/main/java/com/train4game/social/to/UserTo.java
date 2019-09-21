@@ -5,7 +5,6 @@ import com.train4game.social.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @StringFieldsMatch(first = "password", second = "confirmPassword",
@@ -29,7 +28,6 @@ public class UserTo {
     @Size(min = 4, max = 100, groups = View.UserRegister.class)
     String confirmPassword;
 
-    @NotEmpty
     @ValidReCaptcha
     private String reCaptchaResponse;
 

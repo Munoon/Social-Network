@@ -41,8 +41,6 @@ public class ProfileController {
     public String register(@Validated(View.UserRegister.class) UserTo userTo, BindingResult result, Model model, SessionStatus sessionStatus) {
         if (result.hasErrors()) {
             registerPage(model, userTo);
-            if (result.getFieldError("reCaptchaResponse") != null)
-                model.addAttribute("captchaError", true);
             return "login";
         }
         userService.create(createNewFromTo(userTo));
@@ -62,8 +60,6 @@ public class ProfileController {
                                 SessionStatus status) {
         if (result.hasErrors()) {
             loginPage(model, userTo);
-            if (result.getFieldError("reCaptchaResponse") != null)
-                model.addAttribute("captchaError", true);
             return "user";
         }
         userTo.setId(authUser.getId());

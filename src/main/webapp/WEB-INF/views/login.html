@@ -13,9 +13,6 @@
             <div th:if="${param.logout}" class="alert alert-success">
                 You have been logged out.
             </div>
-            <div th:if="${captchaError}" class="alert alert-danger">
-                Please, confirm captcha.
-            </div>
 
             <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
                 <h2 class="text-center">[[#{common.login}]]
@@ -53,7 +50,7 @@
                     <div sec:authorize="isAnonymous()">
                         <input th:replace="~{fragments/inputField :: input('userTo.confirmPassword', 'confirmPassword', 'password')}"/>
                     </div>
-                    <div th:replace="~{fragments/captchaField :: input}"/>
+                    <div th:replace="~{fragments/captchaField :: input}"></div>
                     <button type="submit" class="btn btn-primary btn-block mt-3"
                             th:text="#{common.signup}">Register
                     </button>
