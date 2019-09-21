@@ -1,6 +1,6 @@
 <th:block th:fragment="input" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group">
         <div class="g-recaptcha" th:attr="data-sitekey=${@recaptchaService.getRecaptchaHtml()}"></div>
-        <div class="alert alert-danger mt-2" th:if="${#fields.hasErrors('reCaptchaResponse')}" th:errors="#{*{__${'reCaptchaResponse'}__}}"></div>
+        <div class="alert alert-danger mt-2" th:if="${#fields.hasErrors('reCaptchaResponse')}" th:errors="#{captcha.error}"></div>
     </div>
 </th:block>
