@@ -28,7 +28,7 @@ public class UserTo {
     @Size(min = 4, max = 100, groups = View.UserRegister.class)
     String confirmPassword;
 
-    @ValidReCaptcha
+    @ValidReCaptcha(groups = View.UserRegister.class)
     private String reCaptchaResponse;
 
     public UserTo() {

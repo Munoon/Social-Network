@@ -13,7 +13,6 @@
             <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
                 <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
-                <div th:replace="~{fragments/captchaField :: input}"/>
                 <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
                     Update
                 </button>
