@@ -39,6 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/profile", true)
                 .loginProcessingUrl("/profile/login")
                 .and()
+                .rememberMe()
+                .rememberMeParameter("remember")
+                .rememberMeCookieName("remember")
+                .and()
                 .logout()
                 .logoutUrl("/profile/logout")
                 .logoutSuccessUrl("/profile/login?logout");
