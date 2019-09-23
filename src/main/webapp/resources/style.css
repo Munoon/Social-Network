@@ -8,11 +8,11 @@
     border-radius: 5px;
 }
 
-.custom-navbar .btn-group a {
+.custom-navbar-dropdown a {
     color: white;
 }
 
-.custom-navbar .btn-group button {
+.custom-navbar-dropdown button {
     color: white;
 }
 

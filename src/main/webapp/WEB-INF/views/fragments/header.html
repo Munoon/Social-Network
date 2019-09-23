@@ -13,8 +13,8 @@
                 <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             </div>
             <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" style="color: black" th:href="@{/profile/edit}">Edit Profile</a>
-                <a class="dropdown-item" style="color: black" th:href="@{/settings}">Settings</a>
+                <a class="dropdown-item" th:href="@{/profile/edit}">Edit Profile</a>
+                <a class="dropdown-item" th:href="@{/settings}">Settings</a>
                 <div class="dropdown-divider"></div>
                 <form th:action="@{/profile/logout}" method="post">
                     <input type="submit" class="dropdown-item" value="Logout">
