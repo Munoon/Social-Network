@@ -4,6 +4,7 @@
 <head th:replace="~{fragments/headTag :: head('Registration')}"></head>
 <body>
 <script src='https://www.google.com/recaptcha/api.js'></script>
+<header th:replace="~{fragments/header}"></header>
 <div class="container">
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
@@ -62,7 +63,5 @@
         </div>
     </div>
 </div>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
-<script th:src="@{/resources/script.js}" defer></script>
 </body>
 </html>
