@@ -2,8 +2,6 @@ package com.train4game.social.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.train4game.social.web.json.JacksonObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +15,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,44 +24,10 @@ import java.util.Locale;
 @ComponentScan(basePackages = "com.train4game.social.**.web")
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private ApplicationContext ctx;
-
     @Bean
     @Description("Jackson Object Mapper")
     public ObjectMapper objectMapper() {
         return JacksonObjectMapper.getMapper();
-    }
-
-    @Bean
-    @Description("Thymeleaf Template Resolver")
-    public SpringResourceTemplateResolver templateResolver() {
-        final var templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setApplicationContext(ctx);
-        templateResolver.setPrefix("/WEB-INF/views/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCacheable(false);
-        return templateResolver;
-    }
-
-    @Bean
-    @Description("Thymeleaf Template Engine")
-    public SpringTemplateEngine templateEngine() {
-        final var templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.addDialect(new SpringSecurityDialect());
-        return templateEngine;
-    }
-
-    @Bean
-    @Description("Thymeleaf View Resolver")
-    public ThymeleafViewResolver viewResolver() {
-        final var viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding("UTF-8");
-        viewResolver.setOrder(1);
-        return viewResolver;
     }
 
     @Bean
