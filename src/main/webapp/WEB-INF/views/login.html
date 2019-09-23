@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/headTag :: head('Registration')}"></head>
 <body>
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<header th:replace="~{fragments/header}"></header>
 <div class="container">
+    <header th:replace="~{fragments/header}"></header>
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
             <div th:if="${param.error}" class="alert alert-danger">
@@ -48,9 +47,7 @@
                     <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
-                    <div sec:authorize="isAnonymous()">
-                        <input th:replace="~{fragments/inputField :: input('userTo.confirmPassword', 'confirmPassword', 'password')}"/>
-                    </div>
+                    <input th:replace="~{fragments/inputField :: input('userTo.confirmPassword', 'confirmPassword', 'password')}"/>
                     <div th:replace="~{fragments/captchaField :: input}"></div>
                     <button type="submit" class="btn btn-primary btn-block mt-3"
                             th:text="#{common.signup}">Register

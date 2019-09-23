@@ -1,7 +1,13 @@
 const registrationEl = document.getElementById("registrationEl");
 const loginEl = document.getElementById("loginEl");
 const loginForm = document.forms['loginForm'];
-const logoutForm = document.getElementById('logoutForm');
+const dropdownMenu = document.getElementById('dropdown-menu');
+
+if (dropdownMenu !== null)
+    dropdownMenu.querySelector('button').addEventListener('click', e => {
+        e.preventDefault();
+        dropdownMenu.querySelector('.dropdown-menu').classList.toggle('show');
+    });
 
 function showRegister() {
     registrationEl.hidden = false;
@@ -18,8 +24,4 @@ function login(email, pass) {
     inputs['email'].value = email;
     inputs['password'].value = pass;
     loginForm.submit();
-}
-
-function logout() {
-    logoutForm.submit();
 }

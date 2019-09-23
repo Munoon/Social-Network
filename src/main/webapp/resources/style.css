@@ -1,3 +1,21 @@
+.custom-navbar {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.custom-navbar-dropdown {
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.custom-navbar .btn-group a {
+    color: white;
+}
+
+.custom-navbar .btn-group button {
+    color: white;
+}
+
 .user-button {
     cursor: pointer;
 }

@@ -1,19 +1,21 @@
 <header th:fragment="header" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-dark bg-primary custom-navbar">
         <a class="navbar-brand" th:href="@{/}">
             <img th:src="@{/resources/icon.png}" width="30" height="30" class="d-inline-block align-top" alt="">
             Social
         </a>
-        <div class="btn-group" sec:authorize="isAuthenticated()">
-            <a class="btn btn-danger" th:href="@{/profile}">
-                <span sec:authentication="principal.userTo.name"></span> <span sec:authentication="principal.userTo.surname"></span>
-            </a>
-            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" th:value="@{/profile/edit}">Edit Profile</a>
-                <a class="dropdown-item" th:href="@{/settings}">Settings</a>
+
+        <div id="dropdown-menu" class="btn-group dropdown" sec:authorize="isAuthenticated()">
+            <div class="custom-navbar-dropdown">
+                <a class="btn" th:href="@{/profile}">
+                    <span sec:authentication="principal.userTo.name"></span> <span sec:authentication="principal.userTo.surname"></span>
+                </a>
+                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" style="color: black" th:href="@{/profile/edit}">Edit Profile</a>
+                <a class="dropdown-item" style="color: black" th:href="@{/settings}">Settings</a>
+                <div class="dropdown-divider"></div>
                 <form th:action="@{/profile/logout}" method="post">
                     <input type="submit" class="dropdown-item" value="Logout">
                 </form>
