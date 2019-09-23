@@ -17,6 +17,10 @@ public class UserTo {
     String name;
 
     @NotBlank
+    @Size(min = 2, max = 100)
+    String surname;
+
+    @NotBlank
     @Size(max = 200)
     String email;
 
@@ -34,9 +38,10 @@ public class UserTo {
     public UserTo() {
     }
 
-    public UserTo(Integer id, @NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(max = 200) String email, @NotBlank @Size(min = 5, max = 100) String password) {
+    public UserTo(Integer id, @NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(min = 2, max = 100) String surname, @NotBlank @Size(max = 200) String email, @NotBlank @Size(min = 5, max = 100) String password) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.email = email;
         this.password = password;
     }
@@ -55,6 +60,14 @@ public class UserTo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {

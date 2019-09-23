@@ -14,7 +14,7 @@ class UserServiceTest extends AbstractTest {
 
     @Test
     void create() {
-        User user = new User(null, "New User", "email@gmail.com", "password", Role.ROLE_USER);
+        User user = createNewUser();
         User created = service.create(user);
         user.setId(created.getId());
         assertMatch(service.getAll(), ADMIN, USER, user);

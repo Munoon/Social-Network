@@ -5,7 +5,9 @@
             Social
         </a>
         <div class="btn-group" sec:authorize="isAuthenticated()">
-            <a class="btn btn-danger" th:href="@{/profile}" sec:authentication="principal.userTo.name">Nikita Ivchenko</a>
+            <a class="btn btn-danger" th:href="@{/profile}">
+                <span sec:authentication="principal.userTo.name"></span> <span sec:authentication="principal.userTo.surname"></span>
+            </a>
             <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="sr-only">Toggle Dropdown</span>
             </button>

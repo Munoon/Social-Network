@@ -27,6 +27,7 @@ class ProfileControllerTest extends AbstractWebTest {
         UserTo userTo = createNewUserTo();
         mockMvc.perform(post(URL + "register")
                 .param("name", userTo.getName())
+                .param("surname", userTo.getSurname())
                 .param("email", userTo.getEmail())
                 .param("password", userTo.getPassword())
                 .param("confirmPassword", userTo.getPassword())
@@ -44,6 +45,7 @@ class ProfileControllerTest extends AbstractWebTest {
         UserTo userTo = createNewUserTo();
         mockMvc.perform(post(URL + "register")
                 .param("name", userTo.getName())
+                .param("surname", userTo.getSurname())
                 .param("email", userTo.getEmail())
                 .param("password", userTo.getPassword())
                 .param("g-recaptcha-response", userTo.getPassword())
@@ -62,6 +64,7 @@ class ProfileControllerTest extends AbstractWebTest {
         when(recaptchaService.isVerifyRecaptcha(validRecaptcha)).thenReturn(true);
         mockMvc.perform(post(URL + "register")
                 .param("name", userTo.getName())
+                .param("surname", userTo.getSurname())
                 .param("email", userTo.getEmail())
                 .param("password", userTo.getPassword())
                 .param("confirmPassword", userTo.getPassword())
