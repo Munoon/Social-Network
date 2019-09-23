@@ -8,14 +8,6 @@
     border-radius: 5px;
 }
 
-.custom-navbar-dropdown a {
-    color: white;
-}
-
-.custom-navbar-dropdown button {
-    color: white;
-}
-
 .user-button {
     cursor: pointer;
 }

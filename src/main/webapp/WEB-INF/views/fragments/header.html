@@ -5,21 +5,25 @@
             Social
         </a>
 
-        <div id="dropdown-menu" class="btn-group dropdown" sec:authorize="isAuthenticated()">
-            <div class="custom-navbar-dropdown">
-                <a class="btn" th:href="@{/profile}">
+        <ul class="pagination custom-navbar-dropdown" sec:authorize="isAuthenticated()">
+            <li class="page-item" style="border-right: 2px solid white">
+                <a class="btn text-white" th:href="@{/profile}">
                     <span sec:authentication="principal.userTo.name"></span> <span sec:authentication="principal.userTo.surname"></span>
                 </a>
-                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            </div>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" th:href="@{/profile/edit}">Edit Profile</a>
-                <a class="dropdown-item" th:href="@{/settings}">Settings</a>
-                <div class="dropdown-divider"></div>
-                <form th:action="@{/profile/logout}" method="post">
-                    <input type="submit" class="dropdown-item" value="Logout">
-                </form>
-            </div>
-        </div>
+            </li>
+            <li class="page-item">
+                <div class="btn-group">
+                    <button type="button" class="btn dropdown-toggle text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" th:href="@{/profile/edit}">Edit Profile</a>
+                        <a class="dropdown-item" th:href="@{/settings}">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <form th:action="@{/profile/logout}" method="post">
+                            <input type="submit" class="dropdown-item" value="Logout">
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </nav>
 </header>
