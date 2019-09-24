@@ -1,0 +1,29 @@
+<header th:fragment="header" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <nav class="navbar navbar-dark bg-primary custom-navbar">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/resources/icon.png}" width="30" height="30" class="d-inline-block align-top" alt="">
+            Social
+        </a>
+
+        <ul class="pagination custom-navbar-dropdown" sec:authorize="isAuthenticated()">
+            <li class="page-item" style="border-right: 2px solid white">
+                <a class="btn text-white" th:href="@{/profile}">
+                    <span sec:authentication="principal.userTo.name"></span> <span sec:authentication="principal.userTo.surname"></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <div class="btn-group">
+                    <button type="button" class="btn dropdown-toggle text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" th:href="@{/profile/edit}" th:text="#{common.editProfile}">Edit Profile</a>
+                        <a class="dropdown-item" th:href="@{/settings}" th:text="#{common.settings}">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <form th:action="@{/profile/logout}" method="post">
+                            <input type="submit" class="dropdown-item" th:value="#{common.logout}">
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>

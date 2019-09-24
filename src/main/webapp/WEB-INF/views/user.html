@@ -3,11 +3,13 @@
 <head th:replace="~{fragments/headTag :: head('Profile')}"></head>
 <body>
 <div class="container">
+    <header th:replace="~{fragments/header}"></header>
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
             <h2 class="text-center" th:text="#{userTo.update}">Sign up</h2>
             <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
                 <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
+                <input th:replace="~{fragments/inputField :: input('userTo.surname', 'surname', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
                 <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
                     Update
@@ -21,7 +23,5 @@
         </div>
     </div>
 </div>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
-<script th:src="@{/resources/script.js}" defer></script>
 </body>
 </html>

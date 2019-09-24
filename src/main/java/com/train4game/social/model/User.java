@@ -14,6 +14,11 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
 public class User extends AbstractNamedEntity {
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @Column(name = "surname", nullable = false)
+    private String surname;
+
     @Email
     @NotBlank
     @Size(max = 200)
@@ -43,20 +48,22 @@ public class User extends AbstractNamedEntity {
     }
 
     public User(User u) {
-        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRegistered(), u.isEnabled(), u.getRoles());
+        this(u.getId(), u.getName(), u.getSurname(), u.getEmail(), u.getPassword(), u.getRegistered(), u.isEnabled(), u.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+    public User(Integer id, String name, String surname, String email, String password, Role role, Role... roles) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.email = email;
         this.password = password;
         this.roles = EnumSet.of(role, roles);
     }
 
-    public User(Integer id, String name, String email, String password, Date registered, boolean enabled, Set<Role> roles) {
+    public User(Integer id, String name, String surname, String email, String password, Date registered, boolean enabled, Set<Role> roles) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.email = email;
         this.password = password;
         this.registered = registered;
@@ -102,6 +109,14 @@ public class User extends AbstractNamedEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     @Override
