@@ -40,6 +40,7 @@
         <!-- TEST -->
         <junit.jupiter.version>5.5.1</junit.jupiter.version>
         <assertj.version>3.13.2</assertj.version>
+        <mockito-junit-jupiter.version>3.0.0</mockito-junit-jupiter.version>
 
         <!-- JSON -->
         <jackson-json.version>2.9.9</jackson-json.version>
@@ -228,7 +229,6 @@
             <version>${thymeleaf-spring5.version}</version>
         </dependency>
 
-
         <!-- TEST -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -253,6 +253,12 @@
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.0.0</version>
+            <scope>${mockito-junit-jupiter.version}</scope>
         </dependency>
 
         <!-- JSON -->
@@ -285,36 +291,29 @@
             <version>${webjars-locator.version}</version>
         </dependency>
 
-        <!-- ANNOTATIONS -->
+        <!-- MISC -->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>${javax.annotation-api.version}</version>
         </dependency>
-
-        <!-- LOMBOK -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- EMAIL -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>${mail.version}</version>
         </dependency>
-
-
         <!-- Necessary for hibernate validator -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.el</artifactId>
             <version>3.0.0</version>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>

@@ -4,22 +4,37 @@ import com.train4game.social.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.List;
 import java.util.Properties;
 
 @Configuration
+@EnableScheduling
+@EnableAsync
 @ComponentScan("com.train4game.social.**.service")
 @PropertySource("classpath:settings.properties")
-@Import({DbConfig.class, WebSecurityConfig.class})
+@Import({DbConfig.class, WebSecurityConfig.class, ThymeleafConfig.class})
 public class AppConfig {
 
     @Autowired
     private Environment env;
+
+    @Bean("threadPoolTaskExecutor")
+    public TaskExecutor getAsyncExecutor() {
+        final var executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(20);
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setThreadNamePrefix("Async-");
+        return executor;
+    }
 
     @Bean
     @Description("Java Mail Sender")
@@ -37,16 +52,6 @@ public class AppConfig {
         props.forEach(prop -> properties.setProperty("mail." + prop, env.getRequiredProperty(prefix + prop)));
         sender.setJavaMailProperties(properties);
         return sender;
-    }
-
-    @Bean
-    @Description("Resource Bundle Message Source")
-    public MessageSource messageSource() {
-        final var messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setFallbackToSystemLocale(false);
-        messageSource.setBasenames("classpath:messages/app");
-        return messageSource;
     }
 
     @Bean

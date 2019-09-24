@@ -1,6 +1,7 @@
 package com.train4game.social.model;
 
 import org.hibernate.annotations.BatchSize;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,6 +15,14 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
 public class User extends AbstractNamedEntity {
+    public enum Role implements GrantedAuthority {
+        ROLE_USER, ROLE_ADMIN;
+        @Override
+        public String getAuthority() {
+            return name();
+        }
+    }
+
     @Email
     @NotBlank
     @Size(max = 200)

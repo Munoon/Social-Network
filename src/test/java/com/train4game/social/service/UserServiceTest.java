@@ -1,7 +1,6 @@
 package com.train4game.social.service;
 
 import com.train4game.social.TimingExtension;
-import com.train4game.social.model.Role;
 import com.train4game.social.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,7 @@ class UserServiceTest {
 
     @Test
     void create() {
-        User user = new User(null, "New User", "email@gmail.com", "password", Role.ROLE_USER);
+        User user = new User(null, "New User", "email@gmail.com", "password", User.Role.ROLE_USER);
         User created = service.create(user);
         user.setId(created.getId());
         assertMatch(service.getAll(), ADMIN, USER, user);
@@ -29,7 +28,7 @@ class UserServiceTest {
 
     @Test
     void delete() {
-        service.delete(ADMIN_ID);
+        service.deleteById(ADMIN_ID);
         assertMatch(service.getAll(), USER);
     }
 

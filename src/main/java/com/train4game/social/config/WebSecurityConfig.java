@@ -4,6 +4,7 @@ import com.train4game.social.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Description;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,7 +23,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/profile/login", "/profile/register")
+                .antMatchers(
+                        "/login", "/register",
+                        "/resend-token", "/confirm-token",
+                        "/profile/forgot-password", "/profile/reset-password")
                 .anonymous()
                 .and()
                 .authorizeRequests()
@@ -34,14 +38,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole("ADMIN")
                 .and()
                 .formLogin()
-                .loginPage("/profile/login")
+                .loginPage("/login")
                 .usernameParameter("email")
                 .defaultSuccessUrl("/profile", true)
-                .loginProcessingUrl("/profile/login")
+                .loginProcessingUrl("/login")
                 .and()
                 .logout()
-                .logoutUrl("/profile/logout")
-                .logoutSuccessUrl("/profile/login?logout");
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout");
     }
 
     @Override
@@ -55,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @Description("Password Encoder")
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
