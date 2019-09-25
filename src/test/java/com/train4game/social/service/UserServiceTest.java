@@ -16,13 +16,13 @@ class UserServiceTest extends AbstractTest {
         User user = createNewUser();
         User created = service.create(user);
         user.setId(created.getId());
-        assertMatch(service.getAll(), ADMIN, USER, user);
+        assertMatch(service.getAll(), ADMIN, USER, NEW_USER, user);
     }
 
     @Test
     void delete() {
         service.deleteById(ADMIN_ID);
-        assertMatch(service.getAll(), USER);
+        assertMatch(service.getAll(), USER, NEW_USER);
     }
 
     @Test
@@ -37,16 +37,16 @@ class UserServiceTest extends AbstractTest {
 
     @Test
     void getAll() {
-        assertMatch(service.getAll(), ADMIN, USER);
+        assertMatch(service.getAll(), ADMIN, USER, NEW_USER);
     }
 
     @Test
     void update() {
         User updated = new User(ADMIN);
         updated.setName("New Name");
-        updated.setEmail("newEmail@email.com");
+        updated.setEmail("newemail@email.com");
 
         service.update(updated);
-        assertMatch(service.getAll(), USER, updated);
+        assertMatch(service.getAll(), USER, NEW_USER, updated);
     }
 }

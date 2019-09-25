@@ -70,6 +70,16 @@ public class User extends AbstractNamedEntity {
         this.roles = EnumSet.of(role, roles);
     }
 
+    public User(Integer id, String name, String surname, String email, String password, boolean enabled, Role role, Role... roles) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+        this.roles = EnumSet.of(role, roles);
+    }
+
     public User(Integer id, String name, String surname, String email, String password, Date registered, boolean enabled, Set<Role> roles) {
         this.id = id;
         this.name = name;
