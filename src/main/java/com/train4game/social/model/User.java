@@ -39,7 +39,7 @@ public class User extends AbstractNamedEntity {
     private boolean enabled = false;
 
     @Column(name = "locale", nullable = false, columnDefinition = "VARCHAR DEFAULT 'en'")
-    private String locale;
+    private String locale = "en";
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))

@@ -1,4 +1,4 @@
-package com.train4game.social.recaptcha;
+package com.train4game.social.addons.recaptcha;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

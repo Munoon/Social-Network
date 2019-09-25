@@ -1,4 +1,4 @@
-package com.train4game.social.recaptcha;
+package com.train4game.social.addons.recaptcha;
 
 public class ReCaptchaException extends RuntimeException {
     public ReCaptchaException(String msg) {

@@ -1,7 +1,7 @@
 package com.train4game.social.web;
 
 import com.train4game.social.AbstractTest;
-import com.train4game.social.recaptcha.ReCaptchaResponseFilter;
+import com.train4game.social.addons.recaptcha.ReCaptchaResponseFilter;
 import com.train4game.social.service.RecaptchaService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

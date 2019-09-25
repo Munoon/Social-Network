@@ -1,7 +1,7 @@
 package com.train4game.social.to;
 
 import com.train4game.social.View;
-import com.train4game.social.recaptcha.ValidReCaptcha;
+import com.train4game.social.addons.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
 
 import javax.validation.constraints.NotBlank;
