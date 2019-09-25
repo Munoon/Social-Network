@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/headTag :: head(#{registration.mail.subject})}"></head>
 <body>
 <div class="container">
+    <header th:replace="~{fragments/header}"></header>
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
             <h2 class="text-center" th:text="Error">Email confirmation</h2>

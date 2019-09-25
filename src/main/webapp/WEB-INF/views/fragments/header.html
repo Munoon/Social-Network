@@ -18,7 +18,7 @@
                         <a class="dropdown-item" th:href="@{/profile/edit}" th:text="#{common.editProfile}">Edit Profile</a>
                         <a class="dropdown-item" th:href="@{/settings}" th:text="#{common.settings}">Settings</a>
                         <div class="dropdown-divider"></div>
-                        <form th:action="@{/profile/logout}" method="post">
+                        <form th:action="@{/logout}" method="post">
                             <input type="submit" class="dropdown-item" th:value="#{common.logout}">
                         </form>
                     </div>
