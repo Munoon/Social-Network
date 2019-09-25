@@ -51,6 +51,7 @@
                 <h2 class="text-center" th:text="#{userTo.signup}">Sign up</h2>
                 <form name="registrationForm" th:action="@{/register}" th:object="${userTo}" method="post">
                     <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
+                    <input th:replace="~{fragments/inputField :: input('userTo.surname', 'surname', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.confirmPassword', 'confirmPassword', 'password')}"/>
