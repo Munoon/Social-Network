@@ -1,6 +1,7 @@
 package com.train4game.social.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.train4game.social.addons.DatabaseLocaleResolver;
 import com.train4game.social.web.json.JacksonObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import java.util.List;
@@ -33,10 +33,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     @Description("Cookie Locale Resolver")
     public LocaleResolver localeResolver() {
-        final var localeResolver = new CookieLocaleResolver();
-        localeResolver.setDefaultLocale(new Locale.Builder().setLanguage("ru").build());
-        localeResolver.setCookieName("lang");
-        localeResolver.setCookieMaxAge(24 * 60 * 60);
+        final var localeResolver = new DatabaseLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.ENGLISH);
+        localeResolver.setLocaleAttributeName("lang");
         return localeResolver;
     }
 

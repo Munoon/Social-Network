@@ -58,6 +58,10 @@ public class UserService implements UserDetailsService {
         repository.save(prepareToSave(user, encoder));
     }
 
+    public void updateLocale(int id, String locale) {
+        repository.updateLocale(id, locale);
+    }
+
     public void enable(User user) {
         repository.enable(user);
     }

@@ -38,6 +38,9 @@ public class User extends AbstractNamedEntity {
     @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean enabled = false;
 
+    @Column(name = "locale", nullable = false, columnDefinition = "VARCHAR DEFAULT 'en'")
+    private String locale;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -137,6 +140,14 @@ public class User extends AbstractNamedEntity {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     @Override
