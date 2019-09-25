@@ -1,6 +1,7 @@
 package com.train4game.social.model;
 
 import org.hibernate.annotations.BatchSize;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -34,8 +35,8 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private Date registered = new Date();
 
-    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-    private boolean enabled = true;
+    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean enabled = false;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -43,6 +44,15 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 200)
     private Set<Role> roles;
+
+    public enum Role implements GrantedAuthority {
+        ROLE_USER, ROLE_ADMIN;
+
+        @Override
+        public String getAuthority() {
+            return name();
+        }
+    }
 
     public User() {
     }
@@ -128,6 +138,7 @@ public class User extends AbstractNamedEntity {
                 ", enabled=" + enabled +
                 ", roles=" + roles +
                 ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", id=" + id +
                 '}';
     }

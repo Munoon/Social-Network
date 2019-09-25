@@ -5,8 +5,8 @@ import com.train4game.social.to.UserTo;
 
 import java.util.Arrays;
 
-import static com.train4game.social.model.Role.ROLE_ADMIN;
-import static com.train4game.social.model.Role.ROLE_USER;
+import static com.train4game.social.model.User.Role.ROLE_ADMIN;
+import static com.train4game.social.model.User.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTestData {

@@ -1,10 +1,7 @@
 package com.train4game.social.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -34,6 +31,7 @@ public class DbConfig {
     private Environment env;
 
     @Bean
+    @Description("Data Source")
     public DataSource dataSource() {
         final var dataSource = new DriverManagerDataSource();
         dataSource.setUrl(env.getRequiredProperty("database.url"));
@@ -53,6 +51,7 @@ public class DbConfig {
     }
 
     @Bean
+    @Description("Entity Manager Factory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final var jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(true);
@@ -73,6 +72,7 @@ public class DbConfig {
     }
 
     @Bean
+    @Description("Transaction Manager")
     public PlatformTransactionManager transactionManager() {
         final var transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());

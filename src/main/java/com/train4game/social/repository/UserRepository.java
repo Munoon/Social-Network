@@ -1,33 +1,26 @@
 package com.train4game.social.repository;
 
 import com.train4game.social.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class UserRepository {
-    @Autowired
-    private CrudUserRepository repository;
+@Transactional(readOnly = true)
+public interface UserRepository extends JpaRepository<User, Integer> {
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.id=:id")
+    void deleteById(@Param("id") int id);
 
-    public User save(User user) {
-        return repository.save(user);
-    }
+    @Query("FROM User u WHERE u.email = ?1")
+    Optional<User> getByEmail(String email);
 
-    public User get(int id) {
-        return repository.getById(id);
-    }
-
-    public boolean delete(int id) {
-        return repository.deleteById(id) != 0;
-    }
-
-    public User getByEmail(String email) {
-        return repository.getByEmail(email);
-    }
-
-    public List<User> getAll() {
-        return repository.findAll();
-    }
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.enabled = TRUE WHERE u = ?1")
+    void enable(User user);
 }

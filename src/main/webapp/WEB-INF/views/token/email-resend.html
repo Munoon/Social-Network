@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/headTag :: head(#{token.registration.resendEmail.title})}"></head>
+<body>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-5 mx-auto border rounded p-3">
+            <h2 class="text-center" th:text="#{token.registration.resendEmail.title}">Email confirmation</h2>
+            <p th:text="#{token.registration.resendEmail.text}">Text</p>
+            <form th:action="@{/resend-token}" method="post">
+                <input type="hidden" name="email" th:value="${email}"/>
+                <input class="btn btn-secondary btn-block" type="submit" th:value="#{token.registration.resendEmail.btnText}"/>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+<script th:src="@{/resources/script.js}" defer></script>
+</body>
+</html>
