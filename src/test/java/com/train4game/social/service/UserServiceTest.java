@@ -1,8 +1,6 @@
 package com.train4game.social.service;
 
 import com.train4game.social.AbstractTest;
-import com.train4game.social.model.Role;
-import com.train4game.social.TimingExtension;
 import com.train4game.social.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

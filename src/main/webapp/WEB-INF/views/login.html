@@ -49,17 +49,13 @@
                  th:attrappend="hidden=${!register} ? 'hidden'"
                  id="registrationEl">
                 <h2 class="text-center" th:text="#{userTo.signup}">Sign up</h2>
-                <form name="registrationForm" th:action="@{/register}"
-                      th:object="${userTo}"
-                      method="post">
+                <form name="registrationForm" th:action="@{/register}" th:object="${userTo}" method="post">
                     <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.password', 'password', 'password')}"/>
                     <input th:replace="~{fragments/inputField :: input('userTo.confirmPassword', 'confirmPassword', 'password')}"/>
                     <div th:replace="~{fragments/captchaField :: input}"></div>
-                    <button type="submit" class="btn btn-primary btn-block mt-3"
-                            th:text="#{common.signup}">Register
-                    </button>
+                    <button type="submit" class="btn btn-primary btn-block mt-3" th:text="#{common.signup}">Register</button>
                 </form>
                 <button onclick="showLogin()" class="btn btn-secondary btn-block mt-1"
                         th:text="#{userTo.login}">User Login

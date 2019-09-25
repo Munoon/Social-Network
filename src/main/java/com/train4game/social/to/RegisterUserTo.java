@@ -1,5 +1,6 @@
 package com.train4game.social.to;
 
+import com.train4game.social.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
 import com.train4game.social.web.validators.UniqueEmail;
 import lombok.*;
@@ -20,6 +21,10 @@ public class RegisterUserTo {
     String name;
 
     @NotBlank
+    @Size(min = 2, max = 100)
+    String surname;
+
+    @NotBlank
     @Size(max = 200)
     @UniqueEmail(message = "{error.uniqueEmail}")
     String email;
@@ -31,4 +36,7 @@ public class RegisterUserTo {
     @NotBlank
     @Size(min = 4, max = 100)
     String confirmPassword;
+
+    @ValidReCaptcha
+    private String reCaptchaResponse;
 }
