@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/login", "/register",
                         "/resend-token", "/confirm-token",
-                        "/profile/forgot-password", "/profile/reset-password")
+                        "/forgot-password", "/reset-password")
                 .anonymous()
                 .and()
                 .authorizeRequests()

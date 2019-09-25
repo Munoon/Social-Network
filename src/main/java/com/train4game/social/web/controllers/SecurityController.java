@@ -2,7 +2,10 @@ package com.train4game.social.web.controllers;
 
 import com.train4game.social.model.Token;
 import com.train4game.social.model.User;
+import com.train4game.social.service.ProfileService;
 import com.train4game.social.service.RegistrationService;
+import com.train4game.social.to.PasswordForgotTo;
+import com.train4game.social.to.PasswordResetTo;
 import com.train4game.social.to.RegisterUserTo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,8 +21,9 @@ import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
-public class RegistrationController {
+public class SecurityController {
     private RegistrationService registrationService;
+    private ProfileService profileService;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -59,6 +63,38 @@ public class RegistrationController {
     public String enable(@RequestParam String token) {
         User user = registrationService.enableUser(token);
         return "redirect:/login?enabled&email=" + user.getEmail();
+    }
+
+
+    @GetMapping("/forgot-password")
+    public String forgotPassword(Model model) {
+        model.addAttribute("passwordForgotTo", new PasswordForgotTo());
+        return "token/forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@Valid @ModelAttribute PasswordForgotTo passwordForgotTo, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "token/forgot-password";
+        }
+        profileService.processForgotPassword(passwordForgotTo);
+        return "redirect:/login?resetPassword";
+    }
+
+    @GetMapping("/reset-password")
+    public String resetPassword(@RequestParam("token") String tokenMsg, Model model) {
+        profileService.getToken(tokenMsg);
+        model.addAttribute("passwordResetTo", new PasswordResetTo());
+        return "token/reset-password";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@Valid @ModelAttribute PasswordResetTo passwordResetTo, BindingResult result) {
+        if (result.hasErrors()) {
+            return "token/reset-password";
+        }
+        profileService.resetPassword(passwordResetTo);
+        return "redirect:/login?resetted";
     }
 
     private String registerUser(RegisterUserTo userTo, SessionStatus status) {

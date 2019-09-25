@@ -3,7 +3,7 @@ package com.train4game.social.web;
 import com.train4game.social.util.exception.NotFoundException;
 import com.train4game.social.util.exception.TokenExpiredException;
 import com.train4game.social.web.controllers.ProfileController;
-import com.train4game.social.web.controllers.RegistrationController;
+import com.train4game.social.web.controllers.SecurityController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.train4game.social.util.ValidationUtil.logAndGetRootCause;
 
-@ControllerAdvice(basePackageClasses = {ProfileController.class, RegistrationController.class})
+@ControllerAdvice(basePackageClasses = {ProfileController.class, SecurityController.class})
 @AllArgsConstructor
 @Slf4j
 public class ProfileExceptionHandler {
