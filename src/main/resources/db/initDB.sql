@@ -12,6 +12,7 @@ CREATE TABLE users
     surname          VARCHAR                 NOT NULL,
     email            VARCHAR                 NOT NULL,
     password         VARCHAR                 NOT NULL,
+    locale           VARCHAR DEFAULT 'en'    NOT NULL,
     registered       TIMESTAMP DEFAULT now() NOT NULL,
     enabled          BOOL DEFAULT FALSE      NOT NULL
 );

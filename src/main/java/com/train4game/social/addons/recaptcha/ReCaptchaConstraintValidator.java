@@ -1,4 +1,4 @@
-package com.train4game.social.recaptcha;
+package com.train4game.social.addons.recaptcha;
 
 import com.train4game.social.service.RecaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;

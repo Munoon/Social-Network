@@ -1,12 +1,10 @@
 package com.train4game.social.config;
 
-import org.springframework.context.annotation.*;
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 import com.train4game.social.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Properties;
@@ -54,6 +54,18 @@ public class AppConfig {
         props.forEach(prop -> properties.setProperty("mail." + prop, env.getRequiredProperty(prefix + prop)));
         sender.setJavaMailProperties(properties);
         return sender;
+    }
+
+    @Bean
+    @Description("Resource Bundle Message Source")
+    public MessageSource messageSource() {
+        final var messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setCacheSeconds(10);
+        messageSource.setFallbackToSystemLocale(false);
+        messageSource.setBasenames("classpath:messages/app",
+                "classpath:messages/validation");
+        return messageSource;
     }
 
     @Bean

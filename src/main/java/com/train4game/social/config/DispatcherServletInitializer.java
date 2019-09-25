@@ -1,6 +1,6 @@
 package com.train4game.social.config;
 
-import com.train4game.social.recaptcha.ReCaptchaResponseFilter;
+import com.train4game.social.addons.recaptcha.ReCaptchaResponseFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
