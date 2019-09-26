@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ public class PasswordForgotTo {
     @NotBlank
     @Email
     @EmailExists(message = "{error.emailDoesntExist}")
+    @SafeHtml
     private String email;
 
     @ValidReCaptcha
