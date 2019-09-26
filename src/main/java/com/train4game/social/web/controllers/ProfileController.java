@@ -4,6 +4,8 @@ import com.train4game.social.AuthorizedUser;
 import com.train4game.social.service.ProfileService;
 import com.train4game.social.to.UserTo;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,14 @@ import org.springframework.web.bind.support.SessionStatus;
 @RequestMapping("/profile")
 @AllArgsConstructor
 public class ProfileController {
+    private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
     private ProfileService profileService;
 
     @GetMapping
     public String profile(@AuthenticationPrincipal AuthorizedUser authUser, Model model) {
-        return profilePage(model, authUser.getUserTo());
+        UserTo userTo = authUser.getUserTo();
+        log.info("Get profile for user {}", userTo.getId());
+        return profilePage(model, userTo);
     }
 
     @PostMapping
@@ -34,6 +39,7 @@ public class ProfileController {
         profileService.update(userTo);
         authUser.updateUserTo(userTo);
         status.setComplete();
+        log.info("Update profile {}", userTo);
         return "redirect:/profile";
     }
 

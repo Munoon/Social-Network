@@ -32,16 +32,19 @@ public class RecaptchaService {
 
     public Recaptcha verifyRecaptcha(String recaptchaResponse) {
         String ip = req.getRemoteAddr();
-        if (cacheService.isBlocked(ip))
+        if (cacheService.isBlocked(ip)) {
+            log.info("User with ip {} exceeded maximum tries", ip);
             throw new ReCaptchaException("Client exceeded maximum number of failed attempts");
+        }
 
         String url = RECAPTCHA_URL + String.format("?secret=%s&response=%s&remoteip=%s", recaptchaSecret, recaptchaResponse, ip);
-        log.info("Make get request on link: {}", url);
         Recaptcha recaptcha = restOperations.getForObject(url, Recaptcha.class);
 
         if (recaptcha != null && !recaptcha.isSuccess() && recaptcha.hasClientError()) {
+            log.info("Recaptcha for ip {} failed", ip);
             cacheService.reCaptchaFailed(ip);
         } else {
+            log.info("Recaptcha for ip {} succeeded", ip);
             cacheService.reCaptchaSucceeded(ip);
         }
 

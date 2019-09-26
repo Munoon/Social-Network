@@ -8,6 +8,8 @@ import com.train4game.social.to.PasswordForgotTo;
 import com.train4game.social.to.PasswordResetTo;
 import com.train4game.social.to.RegisterUserTo;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +24,7 @@ import javax.validation.Valid;
 @Controller
 @AllArgsConstructor
 public class SecurityController {
+    private static final Logger log = LoggerFactory.getLogger(SecurityController.class);
     private RegistrationService registrationService;
     private ProfileService profileService;
 
@@ -43,9 +46,11 @@ public class SecurityController {
         }
         User user = registrationService.getUser(userTo);
         if (user == null) {
+            log.info("Register user {}", userTo);
             return registerUser(userTo, sessionStatus);
         }
         if (!user.isEnabled()) {
+            log.info("Email resend page");
             Token token = registrationService.getToken(user);
             model.addAttribute("email", token.getUser().getEmail());
             return "token/email-resend";
@@ -55,12 +60,14 @@ public class SecurityController {
 
     @PostMapping("/resend-token")
     public String resendToken(@RequestParam String email) {
+        log.info("Resend token for email {}", email);
         registrationService.resendToken(email);
         return "redirect:/login?disabled";
     }
 
     @GetMapping("/confirm-token")
     public String enable(@RequestParam String token) {
+        log.info("Confirm token {}", token);
         User user = registrationService.enableUser(token);
         return "redirect:/login?enabled&email=" + user.getEmail();
     }
@@ -77,12 +84,14 @@ public class SecurityController {
         if (result.hasErrors()) {
             return "token/forgot-password";
         }
+        log.info("Forgot password for email {}", passwordForgotTo.getEmail());
         profileService.processForgotPassword(passwordForgotTo);
         return "redirect:/login?resetPassword";
     }
 
     @GetMapping("/reset-password")
     public String resetPassword(@RequestParam("token") String tokenMsg, Model model) {
+        log.info("Reset password page for token {}", tokenMsg);
         profileService.getToken(tokenMsg);
         model.addAttribute("passwordResetTo", new PasswordResetTo());
         return "token/reset-password";
@@ -93,6 +102,7 @@ public class SecurityController {
         if (result.hasErrors()) {
             return "token/reset-password";
         }
+        log.info("Reset password for token {}", passwordResetTo.getToken());
         profileService.resetPassword(passwordResetTo);
         return "redirect:/login?resetted";
     }
