@@ -11,11 +11,10 @@ import static com.train4game.social.data.UserTestData.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class ProfileControllerTest extends AbstractWebTest {
-    private static final String URL = "/profile/";
-
     @Autowired
     private RecaptchaService recaptchaService;
 
@@ -25,7 +24,7 @@ class ProfileControllerTest extends AbstractWebTest {
     @Test
     void registerInvalidReCaptcha() throws Exception {
         UserTo userTo = createNewUserTo();
-        mockMvc.perform(post(URL + "register")
+        mockMvc.perform(post("/register")
                 .param("name", userTo.getName())
                 .param("surname", userTo.getSurname())
                 .param("email", userTo.getEmail())
@@ -34,16 +33,17 @@ class ProfileControllerTest extends AbstractWebTest {
                 .param("g-recaptcha-response", "invalid-resposne")
                 .with(csrf()))
                 .andExpect(model().hasErrors())
+                .andDo(print())
                 .andExpect(model().attributeHasFieldErrors("userTo", "reCaptchaResponse"))
                 .andExpect(status().isOk());
 
-        assertMatch(userService.getAll(), ADMIN, USER);
+        assertMatch(userService.getAll(), ADMIN, USER, NEW_USER);
     }
 
     @Test
     void registerWithoutRecaptcha() throws Exception {
         UserTo userTo = createNewUserTo();
-        mockMvc.perform(post(URL + "register")
+        mockMvc.perform(post("/register")
                 .param("name", userTo.getName())
                 .param("surname", userTo.getSurname())
                 .param("email", userTo.getEmail())
@@ -54,7 +54,7 @@ class ProfileControllerTest extends AbstractWebTest {
                 .andExpect(model().attributeHasFieldErrors("userTo", "reCaptchaResponse"))
                 .andExpect(status().isOk());
 
-        assertMatch(userService.getAll(), ADMIN, USER);
+        assertMatch(userService.getAll(), ADMIN, USER, NEW_USER);
     }
 
     @Test
@@ -62,7 +62,7 @@ class ProfileControllerTest extends AbstractWebTest {
         UserTo userTo = createNewUserTo();
         String validRecaptcha = "valid-recaptcha";
         when(recaptchaService.isVerifyRecaptcha(validRecaptcha)).thenReturn(true);
-        mockMvc.perform(post(URL + "register")
+        mockMvc.perform(post("/register")
                 .param("name", userTo.getName())
                 .param("surname", userTo.getSurname())
                 .param("email", userTo.getEmail())
@@ -70,8 +70,9 @@ class ProfileControllerTest extends AbstractWebTest {
                 .param("confirmPassword", userTo.getPassword())
                 .param("g-recaptcha-response", validRecaptcha)
                 .with(csrf()))
-                .andExpect(redirectedUrl("/profile/login?email=" + userTo.getEmail()));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?disabled"));
 
-        assertMatchIgnoreId(userService.getAll(), ADMIN, USER, createNewUser());
+        assertMatchIgnoreId(userService.getAll(), ADMIN, USER, NEW_USER, createNewUser());
     }
 }
