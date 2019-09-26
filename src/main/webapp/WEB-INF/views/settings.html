@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/headTag :: head('Settings')}"></head>
+<body>
+<div class="container">
+    <header th:replace="~{fragments/header}"></header>
+    <div class="row mt-2">
+        <div class="col-5 mx-auto border rounded p-3">
+            <h2 class="text-center" th:text="#{userTo.settings}">Settings</h2>
+            <form name="registrationForm" th:action="@{/settings}" th:object="${settings}" method="post">
+                <div class="form-group" th:with="valid=${!#fields.hasErrors('locale')}">
+                    <label th:text="#{common.language}">Language</label>
+                    <select th:field="*{__${'locale'}__}" class="form-control" th:errorclass="is-invalid">
+                        <option value="en">English</option>
+                        <option value="ru">Russian</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
+                    Update
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

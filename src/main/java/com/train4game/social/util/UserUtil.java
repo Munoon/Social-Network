@@ -2,6 +2,7 @@ package com.train4game.social.util;
 
 import com.train4game.social.model.User;
 import com.train4game.social.to.RegisterUserTo;
+import com.train4game.social.to.UserSettingsTo;
 import com.train4game.social.to.UserTo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
@@ -20,5 +21,9 @@ public class UserUtil {
         user.setPassword(StringUtils.hasText(password) ? passwordEncoder.encode(password) : password);
         user.setEmail(user.getEmail().toLowerCase());
         return user;
+    }
+
+    public static UserSettingsTo asSettings(User user) {
+        return new UserSettingsTo(user.getLocale());
     }
 }

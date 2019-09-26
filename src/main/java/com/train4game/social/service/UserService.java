@@ -3,6 +3,8 @@ package com.train4game.social.service;
 import com.train4game.social.AuthorizedUser;
 import com.train4game.social.model.User;
 import com.train4game.social.repository.UserRepository;
+import com.train4game.social.to.UserSettingsTo;
+import com.train4game.social.util.UserUtil;
 import com.train4game.social.util.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -64,6 +67,16 @@ public class UserService implements UserDetailsService {
 
     public void enable(User user) {
         repository.enable(user);
+    }
+
+    public UserSettingsTo getUserSettings(int id) {
+        return UserUtil.asSettings(get(id));
+    }
+
+    @Transactional
+    public void updateSettings(int userId, UserSettingsTo settingsTo) {
+        User user = get(userId);
+        user.setLocale(settingsTo.getLocale());
     }
 
     @Override
