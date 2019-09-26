@@ -28,7 +28,7 @@ CREATE TABLE user_roles
 
 CREATE TABLE tokens
 (
-    id              SERIAL PRIMARY KEY NOT NULL,
+    id              INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     token           CHAR(36)                                          NOT NULL,
     type            VARCHAR                                           NOT NULL,
     user_id         INTEGER                                           NOT NULL,

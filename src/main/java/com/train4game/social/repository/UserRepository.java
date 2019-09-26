@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -16,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("DELETE FROM User u WHERE u.id=:id")
     void deleteById(@Param("id") int id);
 
-    @Query("FROM User u WHERE u.email = ?1")
+    @Query("FROM User u LEFT JOIN FETCH u.roles WHERE u.email = ?1")
     Optional<User> getByEmail(String email);
 
     @Transactional
@@ -28,4 +29,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Query("UPDATE User u SET u.locale = ?2 WHERE u.id = ?1")
     void updateLocale(int id, String locale);
+
+    @Override
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.id = ?1")
+    Optional<User> findById(Integer integer);
+
+    @Override
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles")
+    List<User> findAll();
 }

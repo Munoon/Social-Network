@@ -1,11 +1,13 @@
 package com.train4game.social.to;
 
+import com.train4game.social.addons.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.EmailExists;
 import com.train4game.social.web.validators.StringFieldsMatch;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -19,8 +21,9 @@ public class PasswordForgotTo {
     @NotBlank
     @Email
     @EmailExists(message = "{error.emailDoesntExist}")
+    @SafeHtml
     private String email;
-    @NotBlank
-    @Email
-    private String confirmEmail;
+
+    @ValidReCaptcha
+    private String reCaptchaResponse;
 }

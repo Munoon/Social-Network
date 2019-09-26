@@ -48,8 +48,7 @@ public class AppConfig {
         sender.setUsername(env.getRequiredProperty(prefix + "username"));
         sender.setPassword(env.getRequiredProperty(prefix + "password"));
         sender.setDefaultEncoding("UTF-8");
-        List<String> props = List.of("transport.protocol", "smtp.auth",
-                "smtp.starttls.enable", "debug");
+        List<String> props = List.of("transport.protocol", "smtp.auth", "smtp.starttls.enable");
         Properties properties = new Properties();
         props.forEach(prop -> properties.setProperty("mail." + prop, env.getRequiredProperty(prefix + prop)));
         sender.setJavaMailProperties(properties);

@@ -27,7 +27,7 @@ import static com.train4game.social.util.exception.Messages.TOKEN_EXPIRED;
 @Slf4j
 public class ProfileService {
     private static final String MESSAGE_PREFIX = "token.forgotPassword.mail.";
-    private static final String TOKEN_URL = "/profile/reset-password";
+    private static final String TOKEN_URL = "/reset-password";
 
     private UserService userService;
     private TokenRepository tokenRepository;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -18,9 +19,11 @@ public class PasswordResetTo {
     @NotBlank
     @Size(min = 4, max = 100)
     private String password;
+
     @NotBlank
     @Size(min = 4, max = 100)
     private String confirmPassword;
+
     @NotBlank
     @Size(min = 36, max = 36)
     private String token;

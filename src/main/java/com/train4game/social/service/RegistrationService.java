@@ -34,11 +34,12 @@ public class RegistrationService {
     private TokenSender tokenSender;
 
     @Transactional
-    public void registerUser(RegisterUserTo userTo) {
+    public User registerUser(RegisterUserTo userTo) {
         User user = userService.create(createNewFromTo(userTo));
         Token token = new Token(Token.Type.REGISTER, user);
         tokenRepository.save(token);
         sendEmail(token);
+        return user;
     }
 
     @Transactional(noRollbackFor = TokenExpiredException.class)
