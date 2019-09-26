@@ -7,19 +7,18 @@
 # Instalation
 1) Set environment variable `SOCIAL_ROOT` with link on root folder of project.
 2) Setup PostgreSQL 11 or more.
-3) Configure settings in `src/main/resources/settings.properties` and `src/main/resources/db/postgres.properties` **OR** setup tomcat properties:
+3) Create database `social` and user for it with login `user` and password `password`
+4) Configure settings in `src/main/resources/settings.properties` and `src/main/resources/db/postgres.properties` **OR** setup tomcat properties:
 
     Property | Description
     -------- | -----------
-    postgresUsername | Database username
-    postgresPassword | Database password
     email | Email login
     password | password login
     recaptchaSecret | Recaptcha Secret code
     recaptchaHtml | Recaptcha HTML code
 
-4) To launch app you need Maven and Java 11.
-5) Run in root folder commands:
+5) To launch app you need Maven and Java 11.
+6) Run in root folder commands:
     ```
     $ mvn package
     $ mvn cargo:run
