@@ -20,8 +20,14 @@ class UserServiceTest extends AbstractTest {
     }
 
     @Test
-    void delete() {
+    void deleteById() {
         service.deleteById(ADMIN_ID);
+        assertMatch(service.getAll(), USER, NEW_USER);
+    }
+
+    @Test
+    void delete() {
+        service.delete(ADMIN);
         assertMatch(service.getAll(), USER, NEW_USER);
     }
 
@@ -48,5 +54,21 @@ class UserServiceTest extends AbstractTest {
 
         service.update(updated);
         assertMatch(service.getAll(), USER, NEW_USER, updated);
+    }
+
+    @Test
+    void updateLocale() {
+        User expected = new User(ADMIN);
+        expected.setLocale("ru");
+        service.updateLocale(ADMIN_ID, "ru");
+        assertMatch(service.get(ADMIN_ID), expected);
+    }
+
+    @Test
+    void enable() {
+        User expected = new User(NEW_USER);
+        expected.setEnabled(true);
+        service.enable(NEW_USER);
+        assertMatch(service.get(NEW_USER.getId()), expected);
     }
 }
