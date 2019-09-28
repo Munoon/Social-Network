@@ -6,6 +6,7 @@ import com.train4game.social.to.UserTo;
 import com.train4game.social.web.AbstractWebTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static com.train4game.social.data.UserTestData.*;
 import static org.mockito.Mockito.when;
@@ -15,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class ProfileControllerTest extends AbstractWebTest {
-    @Autowired
+    @MockBean
     private RecaptchaService recaptchaService;
 
     @Autowired

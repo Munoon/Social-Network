@@ -5,7 +5,7 @@ import com.train4game.social.service.RecaptchaService;
 import com.train4game.social.to.UserTo;
 import com.train4game.social.web.AbstractWebTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.train4game.social.TestUtil.userAuth;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 public class CsrfIntegrationTest extends AbstractWebTest {
-    @Autowired
+    @MockBean
     private RecaptchaService recaptchaService;
 
     @Test

@@ -15,14 +15,21 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Table(name = "tokens")
-public class Token {
+public class Token extends AbstractBaseEntity {
     public static final int EXPIRATION = 60 * 24;
     public static final int RESEND_NUMBER = 1;
+
     public enum Type {REGISTER, RESET_PASSWORD}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    public Token(Integer id, String token, Type type, User user, LocalDateTime creationDate, LocalDateTime expirationDate, int resendNumber) {
+        super(id);
+        this.token = token;
+        this.type = type;
+        this.user = user;
+        this.creationDate = creationDate;
+        this.expirationDate = expirationDate;
+        this.resendNumber = resendNumber;
+    }
 
     @Column(name = "token", nullable = false, updatable = false)
     private String token = UUID.randomUUID().toString();
