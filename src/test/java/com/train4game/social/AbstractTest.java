@@ -10,7 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(TimingExtension.class)
-@Sql(scripts = {"classpath:data.sql"})
+@Sql(scripts = {"classpath:db/data.sql"})
 public abstract class AbstractTest {
     @Configuration
     static class TestConfiguration {
