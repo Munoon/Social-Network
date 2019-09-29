@@ -70,7 +70,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("/webjars/")
                 .resourceChain(false);
         registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:static/");
+                .addResourceLocations("/resources/");
     }
 
     @Override
