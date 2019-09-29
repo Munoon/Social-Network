@@ -14,4 +14,4 @@ INSERT INTO user_roles (role, user_id) VALUES
     ('ROLE_USER', 102);
 
 INSERT INTO tokens (token, type, user_id, creation_date, expiration_date) VALUES
-    ('56426919-4642-40fd-b7ad-b530c795a197', 'REGISTER', 102, '09-25-2019T12:00', '09-26-2019T12:00');
+    ('56426919-4642-40fd-b7ad-b530c795a197', 'REGISTER', 102, '2019-09-25 12:00:00', '2019-09-26 12:00:00');
