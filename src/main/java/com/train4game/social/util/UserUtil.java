@@ -13,7 +13,7 @@ public class UserUtil {
     }
 
     public static UserTo asTo(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+        return new UserTo(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getLocale());
     }
 
     public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
