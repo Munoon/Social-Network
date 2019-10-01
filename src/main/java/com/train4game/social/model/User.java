@@ -41,6 +41,9 @@ public class User extends AbstractNamedEntity {
     @Column(name = "locale", nullable = false, columnDefinition = "VARCHAR DEFAULT 'en'")
     private String locale = "en";
 
+    @Column(name = "google_id")
+    private String googleId;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -148,6 +151,14 @@ public class User extends AbstractNamedEntity {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     @Override

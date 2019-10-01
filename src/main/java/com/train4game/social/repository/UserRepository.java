@@ -37,4 +37,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Override
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles")
     List<User> findAll();
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.googleId = ?1 OR u.email = ?2")
+    Optional<User> findByGoogleIdOrEmail(String googleId, String email);
 }
