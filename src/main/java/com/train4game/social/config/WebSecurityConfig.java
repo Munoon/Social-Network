@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +30,11 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.filter.CompositeFilter;
 
 import javax.servlet.Filter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Configuration
@@ -45,12 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
-
-    @Autowired
-    private AuthorizationCodeResourceDetails google;
-
-    @Autowired
-    private ResourceServerProperties googleResource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -87,15 +86,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor(UserRepository repository) {
+    public PrincipalExtractor principalExtractor() {
         return map -> {
-            String googleId = (String) map.get("sub");
-            String email = (String) map.get("email");
-            User user = userService.getByGoogleIdOrEmail(googleId, email);
-            if (user == null) {
-                user = UserUtil.createUserFromGoogleMap(map);
-                userService.create(user);
-            }
+            User user;
+            if (map.containsKey("sub"))
+                user = userService.getUserFromGoogleOAuth(map);
+            else
+                user = userService.getUserFromFacebookOAuth(map);
             return new AuthorizedUser(user);
         };
     }
@@ -109,14 +106,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private Filter ssoFilter() {
-        OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
-        OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google, oAuth2ClientContext);
-        googleFilter.setRestTemplate(googleTemplate);
-        UserInfoTokenServices tokenServices = new UserInfoTokenServices(googleResource.getUserInfoUri(), google.getClientId());
-        tokenServices.setRestTemplate(googleTemplate);
-        tokenServices.setPrincipalExtractor(principalExtractor(userRepository));
-        googleFilter.setTokenServices(tokenServices);
-        return googleFilter;
+        CompositeFilter filter = new CompositeFilter();
+        List<Filter> filters = new ArrayList<>();
+        filters.add(ssoFilter(facebook(), "/login/facebook"));
+        filters.add(ssoFilter(google(), "/login/google"));
+        filter.setFilters(filters);
+        return filter;
+    }
+
+    private Filter ssoFilter(ClientResources client, String path) {
+        OAuth2ClientAuthenticationProcessingFilter oAuth2ClientAuthenticationFilter = new OAuth2ClientAuthenticationProcessingFilter(path);
+        OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
+        oAuth2ClientAuthenticationFilter.setRestTemplate(oAuth2RestTemplate);
+        UserInfoTokenServices tokenServices = new UserInfoTokenServices(client.getResource().getUserInfoUri(),
+                client.getClient().getClientId());
+        tokenServices.setRestTemplate(oAuth2RestTemplate);
+        tokenServices.setPrincipalExtractor(principalExtractor());
+        oAuth2ClientAuthenticationFilter.setTokenServices(tokenServices);
+        return oAuth2ClientAuthenticationFilter;
+    }
+
+    @Bean
+    @ConfigurationProperties("google")
+    public ClientResources google() {
+        return new ClientResources();
+    }
+
+    @Bean
+    @ConfigurationProperties("facebook")
+    public ClientResources facebook() {
+        return new ClientResources();
     }
 
     @Bean
@@ -138,5 +157,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Description("Password Encoder")
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+}
+
+class ClientResources {
+    @NestedConfigurationProperty
+    private AuthorizationCodeResourceDetails client = new AuthorizationCodeResourceDetails();
+
+    @NestedConfigurationProperty
+    private ResourceServerProperties resource = new ResourceServerProperties();
+
+    public AuthorizationCodeResourceDetails getClient() {
+        return client;
+    }
+
+    public ResourceServerProperties getResource() {
+        return resource;
     }
 }

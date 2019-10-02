@@ -40,4 +40,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.googleId = ?1 OR u.email = ?2")
     Optional<User> findByGoogleIdOrEmail(String googleId, String email);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.facebookId = ?1 OR u.email = ?2")
+    Optional<User> findByFacebookIdOrEmail(String facebookId, String email);
 }

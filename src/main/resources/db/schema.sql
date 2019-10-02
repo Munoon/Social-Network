@@ -15,7 +15,8 @@ CREATE TABLE users
     locale           VARCHAR DEFAULT 'en'    NOT NULL,
     registered       TIMESTAMP DEFAULT now() NOT NULL,
     enabled          BOOL DEFAULT FALSE      NOT NULL,
-    google_id        VARCHAR
+    google_id        VARCHAR,
+    facebook_id      VARCHAR
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 

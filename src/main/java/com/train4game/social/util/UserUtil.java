@@ -42,4 +42,17 @@ public class UserUtil {
         user.setPassword("google");
         return user;
     }
+
+    public static User createUserFromFacebookMap(Map<String, Object> facebookMap) {
+        User user = new User();
+        String[] name = (String[]) facebookMap.get("name").toString().split(" ");
+        user.setName(name[0]);
+        user.setSurname(name[1]);
+        user.setEmail((String) facebookMap.get("email"));
+        user.setFacebookId((String) facebookMap.get("id"));
+        user.setEnabled(true);
+        user.setRoles(EnumSet.of(User.Role.ROLE_USER));
+        user.setPassword("facebook");
+        return user;
+    }
 }

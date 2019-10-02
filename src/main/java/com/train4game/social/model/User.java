@@ -44,6 +44,9 @@ public class User extends AbstractNamedEntity {
     @Column(name = "google_id")
     private String googleId;
 
+    @Column(name = "facebook_id")
+    private String facebookId;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -159,6 +162,14 @@ public class User extends AbstractNamedEntity {
 
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
     }
 
     @Override

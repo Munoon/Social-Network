@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.train4game.social.util.UserUtil.prepareToSave;
 import static com.train4game.social.util.exception.Messages.NOT_FOUND;
@@ -52,8 +53,34 @@ public class UserService implements UserDetailsService {
                 new NotFoundException(String.format(NOT_FOUND, "user")));
     }
 
-    public User getByGoogleIdOrEmail(String googleId, String email) {
-        return repository.findByGoogleIdOrEmail(googleId, email).orElse(null);
+    public User getUserFromGoogleOAuth(Map map) {
+        String googleId = (String) map.get("sub");
+        String email = (String) map.get("email");
+        User user = getByGoogleIdOrEmail(googleId, email);
+        if (user == null) {
+            user = UserUtil.createUserFromGoogleMap(map);
+            create(user);
+        }
+        if (user.getGoogleId() == null) {
+            user.setGoogleId(googleId);
+            update(user);
+        }
+        return user;
+    }
+
+    public User getUserFromFacebookOAuth(Map map) {
+        String facebookId = (String) map.get("id");
+        String email = (String) map.get("email");
+        User user = getByFacebookIdOrEmail(facebookId, email);
+        if (user == null) {
+            user = UserUtil.createUserFromFacebookMap(map);
+            create(user);
+        }
+        if (user.getFacebookId() == null) {
+            user.setFacebookId(facebookId);
+            update(user);
+        }
+        return user;
     }
 
     public List<User> getAll() {
@@ -89,5 +116,13 @@ public class UserService implements UserDetailsService {
         if (user == null)
             throw new UsernameNotFoundException("User with email " + email + " not found");
         return new AuthorizedUser(user);
+    }
+
+    private User getByGoogleIdOrEmail(String googleId, String email) {
+        return repository.findByGoogleIdOrEmail(googleId, email).orElse(null);
+    }
+
+    private User getByFacebookIdOrEmail(String facebookId, String email) {
+        return repository.findByFacebookIdOrEmail(facebookId, email).orElse(null);
     }
 }
