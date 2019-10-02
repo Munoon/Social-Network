@@ -7,6 +7,9 @@ import com.train4game.social.to.UserTo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
+import java.util.EnumSet;
+import java.util.Map;
+
 public class UserUtil {
     public static User createNewFromTo(RegisterUserTo userTo) {
         return new User(null, userTo.getName(), userTo.getSurname(), userTo.getEmail(), userTo.getPassword(), User.Role.ROLE_USER);
@@ -25,5 +28,18 @@ public class UserUtil {
 
     public static UserSettingsTo asSettings(User user) {
         return new UserSettingsTo(user.getLocale());
+    }
+
+    public static User createUserFromGoogleMap(Map<String, Object> googleMap) {
+        User user = new User();
+        user.setName((String) googleMap.get("given_name"));
+        user.setSurname((String) googleMap.get("family_name"));
+        user.setLocale((String) googleMap.get("locale"));
+        user.setEmail((String) googleMap.get("email"));
+        user.setGoogleId((String) googleMap.get("sub"));
+        user.setEnabled(true);
+        user.setRoles(EnumSet.of(User.Role.ROLE_USER));
+        user.setPassword("google");
+        return user;
     }
 }

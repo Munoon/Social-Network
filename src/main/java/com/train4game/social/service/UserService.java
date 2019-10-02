@@ -52,6 +52,10 @@ public class UserService implements UserDetailsService {
                 new NotFoundException(String.format(NOT_FOUND, "user")));
     }
 
+    public User getByGoogleIdOrEmail(String googleId, String email) {
+        return repository.findByGoogleIdOrEmail(googleId, email).orElse(null);
+    }
+
     public List<User> getAll() {
         return repository.findAll();
     }
