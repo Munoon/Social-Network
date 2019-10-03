@@ -45,9 +45,8 @@ public class UserUtil {
 
     public static User createUserFromFacebookMap(Map<String, Object> facebookMap) {
         User user = new User();
-        String[] name = (String[]) facebookMap.get("name").toString().split(" ");
-        user.setName(name[0]);
-        user.setSurname(name[1]);
+        user.setName((String) facebookMap.get("first_name"));
+        user.setSurname((String) facebookMap.get("last_name"));
         user.setEmail((String) facebookMap.get("email"));
         user.setFacebookId((String) facebookMap.get("id"));
         user.setEnabled(true);

@@ -46,9 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
 
     @Override
