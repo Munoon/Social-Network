@@ -86,18 +86,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor() {
-        return map -> {
-            User user;
-            if (map.containsKey("sub"))
-                user = userService.getUserFromGoogleOAuth(map);
-            else
-                user = userService.getUserFromFacebookOAuth(map);
-            return new AuthorizedUser(user);
-        };
-    }
-
-    @Bean
     public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter) {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(oAuth2ClientContextFilter);
@@ -108,20 +96,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Filter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
-        filters.add(ssoFilter(facebook(), "/login/facebook"));
-        filters.add(ssoFilter(google(), "/login/google"));
+        filters.add(ssoFilter(facebook(), "/login/facebook",
+                map -> userService.getUserFromFacebookOAuth(map)));
+        filters.add(ssoFilter(google(), "/login/google",
+                map -> userService.getUserFromGoogleOAuth(map)));
         filter.setFilters(filters);
         return filter;
     }
 
-    private Filter ssoFilter(ClientResources client, String path) {
-        OAuth2ClientAuthenticationProcessingFilter oAuth2ClientAuthenticationFilter = new OAuth2ClientAuthenticationProcessingFilter(path);
-        OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
+    private Filter ssoFilter(ClientResources client, String path, PrincipalExtractor extractor) {
+        final var oAuth2ClientAuthenticationFilter = new OAuth2ClientAuthenticationProcessingFilter(path);
+        final var oAuth2RestTemplate = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
         oAuth2ClientAuthenticationFilter.setRestTemplate(oAuth2RestTemplate);
-        UserInfoTokenServices tokenServices = new UserInfoTokenServices(client.getResource().getUserInfoUri(),
+        final var tokenServices = new UserInfoTokenServices(client.getResource().getUserInfoUri(),
                 client.getClient().getClientId());
         tokenServices.setRestTemplate(oAuth2RestTemplate);
-        tokenServices.setPrincipalExtractor(principalExtractor());
+        tokenServices.setPrincipalExtractor(map -> new AuthorizedUser((User) extractor.extractPrincipal(map)));
         oAuth2ClientAuthenticationFilter.setTokenServices(tokenServices);
         return oAuth2ClientAuthenticationFilter;
     }
