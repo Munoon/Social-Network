@@ -38,8 +38,18 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" th:text="#{common.login}">Login</button>
                 </form>
-                     <a class="btn btn-block btn-outline-secondary mt-3" th:href="@{/login/google}">Login vie GOOGLE</a>
-                     <a class="btn btn-block btn-outline-secondary mt-3" th:href="@{/login/facebook}">Login vie FACEBOOK</a>
+                <div class="social-buttons mt-3">
+                    <a class="btn btn-block btn-social btn-facebook" th:href="@{/login/facebook}">
+                        <span class="fa fa-facebook"></span> <span th:text="#{common.oauth.facebook}">Sign in with Facebook</span>
+                    </a>
+                    <a class="btn btn-block btn-social btn-google" th:href="@{/login/google}">
+                        <span class="fa fa-google"></span> <span th:text="#{common.oauth.google}">Sign in with Google</span>
+                    </a>
+                    <a class="btn btn-block btn-social btn-vk" th:href="@{/login/vk}">
+                        <span class="fa fa-vk"></span> <span th:text="#{common.oauth.vk}">Sign in with VK</span>
+                    </a>
+                </div>
+                <hr>
                 <div class="d-flex justify-content-around mt-3">
                     <a href="#" class="link" onclick="showRegister()" th:text="#{registration.register.title}">User Sign up</a>
                     <a th:href="@{/forgot-password}" class="link" th:text="#{login.forgotPassword}">Forgot

@@ -11,3 +11,8 @@
 .user-button {
     cursor: pointer;
 }
+
+.social-buttons {
+     color: white;
+     max-width: 220px;
+}
