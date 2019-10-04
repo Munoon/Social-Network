@@ -25,6 +25,7 @@
         <webjars-bootstrap.version>4.3.1</webjars-bootstrap.version>
         <webjars-jquery.version>3.4.1</webjars-jquery.version>
         <webjars-locator.version>0.36</webjars-locator.version>
+        <webjars-bootstrap-social.version>5.1.1</webjars-bootstrap-social.version>
 
         <!-- TESTING -->
         <junit-jupiter.version>5.5.1</junit-jupiter.version>
@@ -152,6 +153,11 @@
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
             <version>${webjars-locator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>bootstrap-social</artifactId>
+            <version>${webjars-bootstrap-social.version}</version>
         </dependency>
 
         <!-- TESTING -->
