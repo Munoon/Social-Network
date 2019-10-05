@@ -3,7 +3,7 @@ package com.train4game.social.service;
 import com.train4game.social.model.Token;
 import com.train4game.social.model.User;
 import com.train4game.social.repository.TokenRepository;
-import com.train4game.social.service.email.TokenSender;
+import com.train4game.social.service.email.AsyncEmailSender;
 import com.train4game.social.to.RegisterUserTo;
 import com.train4game.social.util.exception.NotFoundException;
 import com.train4game.social.util.exception.TokenExpiredException;
@@ -31,7 +31,7 @@ public class RegistrationService {
 
     private UserService userService;
     private TokenRepository tokenRepository;
-    private TokenSender tokenSender;
+    private AsyncEmailSender asyncEmailSender;
 
     @Transactional
     public User registerUser(RegisterUserTo userTo) {
@@ -70,7 +70,7 @@ public class RegistrationService {
         String appUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .build().toUriString();
         Locale locale = LocaleContextHolder.getLocale();
-        tokenSender.sendEmail(token, MESSAGE_PREFIX, appUrl + TOKEN_URL, locale);
+        asyncEmailSender.sendTokenEmail(token, MESSAGE_PREFIX, appUrl + TOKEN_URL, locale);
     }
 
     private void handleResend(Token token) {

@@ -3,7 +3,7 @@ package com.train4game.social.service;
 import com.train4game.social.model.Token;
 import com.train4game.social.model.User;
 import com.train4game.social.repository.TokenRepository;
-import com.train4game.social.service.email.TokenSender;
+import com.train4game.social.service.email.AsyncEmailSender;
 import com.train4game.social.to.PasswordForgotTo;
 import com.train4game.social.to.PasswordResetTo;
 import com.train4game.social.to.UserTo;
@@ -31,7 +31,7 @@ public class ProfileService {
 
     private UserService userService;
     private TokenRepository tokenRepository;
-    private TokenSender tokenSender;
+    private AsyncEmailSender asyncEmailSender;
     private PasswordEncoder encoder;
 
     @Transactional
@@ -40,7 +40,7 @@ public class ProfileService {
         Token token = new Token(Token.Type.RESET_PASSWORD, user);
         String appUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .build().toUriString();
-        tokenSender.sendEmail(token, MESSAGE_PREFIX, appUrl + TOKEN_URL, LocaleContextHolder.getLocale());
+        asyncEmailSender.sendTokenEmail(token, MESSAGE_PREFIX, appUrl + TOKEN_URL, LocaleContextHolder.getLocale());
         tokenRepository.save(token);
     }
 
