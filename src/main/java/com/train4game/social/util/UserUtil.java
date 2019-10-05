@@ -57,11 +57,9 @@ public class UserUtil {
     }
 
     public static User createUserFromVkMap(Map<String, Object> vkMap) {
-        Map<String, Object> userMap = (((List<Map<String, Object>>) vkMap.get("response")).get(0));
         User user = new User();
-        user.setName((String) userMap.get("first_name"));
-        user.setSurname((String) userMap.get("last_name"));
-        user.setId((Integer) userMap.get("id"));
+        user.setName((String) vkMap.get("first_name"));
+        user.setSurname((String) vkMap.get("last_name"));
         user.setEnabled(true);
         user.setRoles(EnumSet.of(User.Role.ROLE_USER));
         user.setEmail("fucking@vk.com");

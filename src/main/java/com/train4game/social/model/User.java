@@ -47,6 +47,9 @@ public class User extends AbstractNamedEntity {
     @Column(name = "facebook_id")
     private String facebookId;
 
+    @Column(name = "vk_id")
+    private Integer vkId;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -170,6 +173,14 @@ public class User extends AbstractNamedEntity {
 
     public void setFacebookId(String facebookId) {
         this.facebookId = facebookId;
+    }
+
+    public Integer getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Integer vkId) {
+        this.vkId = vkId;
     }
 
     @Override

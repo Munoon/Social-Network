@@ -53,36 +53,6 @@ public class UserService implements UserDetailsService {
                 new NotFoundException(String.format(NOT_FOUND, "user")));
     }
 
-    public User getUserFromGoogleOAuth(Map map) {
-        String googleId = (String) map.get("sub");
-        String email = (String) map.get("email");
-        User user = getByGoogleIdOrEmail(googleId, email);
-        if (user == null) {
-            user = UserUtil.createUserFromGoogleMap(map);
-            create(user);
-        }
-        if (user.getGoogleId() == null) {
-            user.setGoogleId(googleId);
-            update(user);
-        }
-        return user;
-    }
-
-    public User getUserFromFacebookOAuth(Map map) {
-        String facebookId = (String) map.get("id");
-        String email = (String) map.get("email");
-        User user = getByFacebookIdOrEmail(facebookId, email);
-        if (user == null) {
-            user = UserUtil.createUserFromFacebookMap(map);
-            create(user);
-        }
-        if (user.getFacebookId() == null) {
-            user.setFacebookId(facebookId);
-            update(user);
-        }
-        return user;
-    }
-
     public List<User> getAll() {
         return repository.findAll();
     }
@@ -116,13 +86,5 @@ public class UserService implements UserDetailsService {
         if (user == null)
             throw new UsernameNotFoundException("User with email " + email + " not found");
         return new AuthorizedUser(user);
-    }
-
-    private User getByGoogleIdOrEmail(String googleId, String email) {
-        return repository.findByGoogleIdOrEmail(googleId, email).orElse(null);
-    }
-
-    private User getByFacebookIdOrEmail(String facebookId, String email) {
-        return repository.findByFacebookIdOrEmail(facebookId, email).orElse(null);
     }
 }

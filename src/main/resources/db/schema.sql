@@ -16,7 +16,8 @@ CREATE TABLE users
     registered       TIMESTAMP DEFAULT now() NOT NULL,
     enabled          BOOL DEFAULT FALSE      NOT NULL,
     google_id        VARCHAR,
-    facebook_id      VARCHAR
+    facebook_id      VARCHAR,
+    vk_id            INTEGER
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 

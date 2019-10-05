@@ -2,6 +2,7 @@ package com.train4game.social.config;
 
 import com.train4game.social.AuthorizedUser;
 import com.train4game.social.model.User;
+import com.train4game.social.service.OAuthService;
 import com.train4game.social.service.UserService;
 import com.train4game.social.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OAuthService oAuthService;
 
     @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
@@ -93,11 +97,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
         filters.add(ssoFilter(facebook(), "/login/facebook",
-                map -> userService.getUserFromFacebookOAuth(map)));
+                map -> oAuthService.getUserFromFacebookOAuth(map)));
         filters.add(ssoFilter(google(), "/login/google",
-                map -> userService.getUserFromGoogleOAuth(map)));
+                map -> oAuthService.getUserFromGoogleOAuth(map)));
         filters.add(ssoFilter(vk(), "/login/vk",
-                map -> userService.create(UserUtil.createUserFromVkMap(map))));
+                map -> oAuthService.getUserFromVKOAuth(map)));
         filter.setFilters(filters);
         return filter;
     }
