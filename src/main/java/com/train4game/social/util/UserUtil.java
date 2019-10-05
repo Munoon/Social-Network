@@ -34,7 +34,7 @@ public class UserUtil {
     }
 
     public static String generatePassword() {
-        return RandomStringUtils.random(18, 97, 122, true, true, null, new SecureRandom());
+        return RandomStringUtils.random(18, 0, 123, true, true, null);
     }
 
     public static User createUserFromGoogleMap(Map<String, Object> googleMap, String password) {
