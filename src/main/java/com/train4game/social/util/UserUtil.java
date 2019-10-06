@@ -62,14 +62,14 @@ public class UserUtil {
         return user;
     }
 
-    public static User createUserFromVkMap(Map<String, Object> vkMap) {
+    public static User createUserFromVkMap(Map<String, Object> vkMap, String password) {
         User user = new User();
         user.setName((String) vkMap.get("first_name"));
         user.setSurname((String) vkMap.get("last_name"));
         user.setEnabled(true);
         user.setRoles(EnumSet.of(User.Role.ROLE_USER));
-        user.setEmail("fucking@vk.com");
-        user.setPassword("facebook");
+        user.setEmail((String) vkMap.get("email"));
+        user.setPassword(password);
         return user;
     }
 }

@@ -1,12 +1,15 @@
 package com.train4game.social.service;
 
+import com.train4game.social.addons.OAuthClientResources;
 import com.train4game.social.model.User;
+import com.train4game.social.model.VKOAuth;
 import com.train4game.social.repository.UserRepository;
 import com.train4game.social.service.email.AsyncEmailSender;
 import com.train4game.social.util.UserUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,8 @@ public class OAuthService {
     private UserRepository repository;
     private UserService userService;
     private AsyncEmailSender emailSender;
+    private OAuthClientResources vk;
+    private RestOperations restOperations;
 
     public User getUserFromGoogleOAuth(Map map) {
         String googleId = (String) map.get("sub");
@@ -57,16 +62,49 @@ public class OAuthService {
         return user;
     }
 
-    public User getUserFromVKOAuth(Map map) {
-        Map<String, Object> userMap = ((List<Map<String, Object>>) map.get("response")).get(0);
-        Integer vkId = (Integer) userMap.get("id");
-        User user = repository.findByVkId(vkId);
-        if (user == null) {
-//            generatePasswordAndSendEmail(email);
-            user = UserUtil.createUserFromVkMap(userMap);
-            userService.create(user);
-            log.info("Create new user from VK oAuth - {}", user);
+    public User readVkOAuth(VKOAuth vkoAuth) {
+        User user;
+        // Find user
+        if (vkoAuth.getEmail() == null) {
+            user = repository.findByVkId(vkoAuth.getUserId());
+        } else {
+            user = repository.findByVkIdOrEmail(vkoAuth.getUserId(), vkoAuth.getEmail());
         }
+
+        // Register user
+        if (user == null && vkoAuth.getEmail() != null) {
+            user = createUser(vkoAuth);
+        } else if (user == null) {
+            return null;
+        }
+
+        // Check if user have vk id
+        // If not - set vk id
+        if (user.getVkId() == null) {
+            user.setVkId(vkoAuth.getUserId());
+            userService.update(user);
+        }
+
+        return user;
+    }
+
+    private User createUser(VKOAuth vkoAuth) {
+        // Getting map info
+        String url = vk.getResource().getUserInfoUri() +
+                "&user_ids=" + vkoAuth.getUserId() +
+                "&access_token=" + vkoAuth.getAccessToken();
+        Map map = restOperations.getForEntity(url, Map.class).getBody();
+        Map<String, Object> userMap = ((List<Map<String, Object>>) map.get("response")).get(0);
+
+        // Creating user with generated password
+        userMap.put("email", vkoAuth.getEmail());
+        String password = UserUtil.generatePassword();
+        User user = UserUtil.createUserFromVkMap(userMap, password);
+        userService.create(user);
+
+        // Send password to email
+        emailSender.sendOAuthEmail(vkoAuth.getEmail(), password, (String) userMap.get("first_name"), "VK");
+        log.info("Create new user from VK oAuth - {}", user);
         return user;
     }
 }

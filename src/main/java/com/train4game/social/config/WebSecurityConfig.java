@@ -1,16 +1,14 @@
 package com.train4game.social.config;
 
 import com.train4game.social.AuthorizedUser;
+import com.train4game.social.addons.OAuthClientResources;
 import com.train4game.social.model.User;
 import com.train4game.social.service.OAuthService;
 import com.train4game.social.service.UserService;
-import com.train4game.social.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +24,6 @@ import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.request.RequestContextListener;
@@ -35,7 +32,6 @@ import org.springframework.web.filter.CompositeFilter;
 import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Configuration
 @EnableWebSecurity
@@ -59,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/login", "/register",
                         "/resend-token", "/confirm-token",
+                        "/login/vk", "/response/vk",
                         "/forgot-password", "/reset-password")
                 .anonymous()
                 .and()
@@ -100,13 +97,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 map -> oAuthService.getUserFromFacebookOAuth(map)));
         filters.add(ssoFilter(google(), "/login/google",
                 map -> oAuthService.getUserFromGoogleOAuth(map)));
-        filters.add(ssoFilter(vk(), "/login/vk",
-                map -> oAuthService.getUserFromVKOAuth(map)));
         filter.setFilters(filters);
         return filter;
     }
 
-    private Filter ssoFilter(ClientResources client, String path, PrincipalExtractor extractor) {
+    private Filter ssoFilter(OAuthClientResources client, String path, PrincipalExtractor extractor) {
         final var oAuth2ClientAuthenticationFilter = new OAuth2ClientAuthenticationProcessingFilter(path);
         final var oAuth2RestTemplate = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
         oAuth2ClientAuthenticationFilter.setRestTemplate(oAuth2RestTemplate);
@@ -120,20 +115,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @ConfigurationProperties("google")
-    public ClientResources google() {
-        return new ClientResources();
+    public OAuthClientResources google() {
+        return new OAuthClientResources();
     }
 
     @Bean
     @ConfigurationProperties("facebook")
-    public ClientResources facebook() {
-        return new ClientResources();
+    public OAuthClientResources facebook() {
+        return new OAuthClientResources();
     }
 
     @Bean
     @ConfigurationProperties("vk")
-    public ClientResources vk() {
-        return new ClientResources();
+    public OAuthClientResources vk() {
+        return new OAuthClientResources();
     }
 
     @Bean
@@ -155,21 +150,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Description("Password Encoder")
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-}
-
-class ClientResources {
-    @NestedConfigurationProperty
-    private AuthorizationCodeResourceDetails client = new AuthorizationCodeResourceDetails();
-
-    @NestedConfigurationProperty
-    private ResourceServerProperties resource = new ResourceServerProperties();
-
-    public AuthorizationCodeResourceDetails getClient() {
-        return client;
-    }
-
-    public ResourceServerProperties getResource() {
-        return resource;
     }
 }
