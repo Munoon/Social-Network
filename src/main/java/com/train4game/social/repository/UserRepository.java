@@ -49,4 +49,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.vkId = ?1 OR u.email = ?2")
     User findByVkIdOrEmail(Integer vkId, String email);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.vkId = ?2 WHERE u.id = ?1")
+    void setVkOauth(int userId, Integer vkOauth);
 }

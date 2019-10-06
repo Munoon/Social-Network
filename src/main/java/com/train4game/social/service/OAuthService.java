@@ -62,6 +62,10 @@ public class OAuthService {
         return user;
     }
 
+    public void setVKOAuth(int userId, Integer vkId) {
+        repository.setVkOauth(userId, vkId);
+    }
+
     public User readVkOAuth(VKOAuth vkoAuth) {
         User user;
         // Find user

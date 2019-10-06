@@ -42,16 +42,19 @@ public class UserTo {
     @ValidReCaptcha(groups = View.UserRegister.class)
     String reCaptchaResponse;
 
+    Integer vkId;
+
     public UserTo() {
     }
 
-    public UserTo(Integer id, @NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(min = 2, max = 100) String surname, @NotBlank @Size(max = 200) String email, @NotBlank @Size(min = 5, max = 100) String password, String locale) {
+    public UserTo(Integer id, @NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(min = 2, max = 100) String surname, @NotBlank @Size(max = 200) String email, @NotBlank @Size(min = 5, max = 100) String password, String locale, Integer vkId) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.locale = locale;
+        this.vkId = vkId;
     }
 
     public Integer getId() {
@@ -116,6 +119,14 @@ public class UserTo {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public Integer getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Integer vkId) {
+        this.vkId = vkId;
     }
 
     @Override

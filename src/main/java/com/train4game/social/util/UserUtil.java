@@ -19,7 +19,7 @@ public class UserUtil {
     }
 
     public static UserTo asTo(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getLocale());
+        return new UserTo(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getLocale(), user.getVkId());
     }
 
     public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {

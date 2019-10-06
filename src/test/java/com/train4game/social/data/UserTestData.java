@@ -17,7 +17,7 @@ public class UserTestData {
     public static final User NEW_USER = new User(ADMIN_ID + 2, "New", "User", "newuser@gmail.com", "{noop}newUser", false, ROLE_USER);
 
     public static UserTo createNewUserTo() {
-        return new UserTo(null, "Another", "User", "anotheruser@gmail.com", "user", "en");
+        return new UserTo(null, "Another", "User", "anotheruser@gmail.com", "user", "en", null);
     }
 
     public static User createNewUser() {

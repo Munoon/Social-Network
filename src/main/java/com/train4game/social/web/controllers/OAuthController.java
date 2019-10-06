@@ -7,6 +7,7 @@ import com.train4game.social.model.VKOAuth;
 import com.train4game.social.service.OAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @AllArgsConstructor
 public class OAuthController {
     private static final String VK_LOGIN_URI = "/response/vk";
-    private static final String VK_CONNECT_URI = "/response/vk";
+    private static final String VK_CONNECT_URI = "/response/connect/vk";
     private OAuthClientResources vk;
     private RestOperations restOperations;
     private OAuthService oAuthService;
@@ -37,13 +38,7 @@ public class OAuthController {
 
     @GetMapping(VK_LOGIN_URI)
     public String vkLoginResponse(@RequestParam String code) {
-        AuthorizationCodeResourceDetails client = vk.getClient();
-        String url = client.getAccessTokenUri() +
-                "?client_id=" + client.getClientId() +
-                "&client_secret=" + client.getClientSecret() +
-                "&redirect_uri=" + getClientUri(VK_LOGIN_URI) +
-                "&code=" + code;
-        VKOAuth vkoAuth = restOperations.getForObject(url, VKOAuth.class);
+        VKOAuth vkoAuth = readData(code, VK_LOGIN_URI);
         User user = oAuthService.readVkOAuth(vkoAuth);
         if (user == null) {
             return "redirect:/login?oauthError=true";
@@ -51,6 +46,24 @@ public class OAuthController {
             getContext().setAuthentication(new UsernamePasswordAuthenticationToken(new AuthorizedUser(user), null, user.getRoles()));
             return "redirect:/profile";
         }
+    }
+
+    @GetMapping(VK_CONNECT_URI)
+    public String vkConnectResponse(@RequestParam String code, @AuthenticationPrincipal AuthorizedUser authorizedUser) {
+        VKOAuth vkoAuth = readData(code, VK_CONNECT_URI);
+        oAuthService.setVKOAuth(authorizedUser.getId(), vkoAuth.getUserId());
+        authorizedUser.getUserTo().setVkId(vkoAuth.getUserId());
+        return "redirect:/settings";
+    }
+
+    private VKOAuth readData(String code, String redirectUrl) {
+        AuthorizationCodeResourceDetails client = vk.getClient();
+        String url = client.getAccessTokenUri() +
+                "?client_id=" + client.getClientId() +
+                "&client_secret=" + client.getClientSecret() +
+                "&redirect_uri=" + getClientUri(redirectUrl) +
+                "&code=" + code;
+        return restOperations.getForObject(url, VKOAuth.class);
     }
 
     @GetMapping("/login/vk")

@@ -27,6 +27,7 @@ public class SettingsController {
     @GetMapping
     public String get(@AuthenticationPrincipal AuthorizedUser authUser, Model model) {
         model.addAttribute("settings", service.getUserSettings(authUser.getId()));
+        model.addAttribute("vkConnected", authUser.getUserTo().getVkId() != null);
         return "settings";
     }
 
@@ -35,8 +36,7 @@ public class SettingsController {
                        BindingResult result, Model model, SessionStatus status,
                        @AuthenticationPrincipal AuthorizedUser authUser) {
         if (result.hasErrors()) {
-            model.addAttribute("settings", settingsTo);
-            return "settings";
+            return get(authUser, model);
         }
         int userId = authUser.getId();
         service.updateSettings(userId, settingsTo);
