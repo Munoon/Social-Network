@@ -2,6 +2,9 @@ package com.train4game.social.config;
 
 import com.train4game.social.AuthorizedUser;
 import com.train4game.social.addons.OAuthClientResources;
+import com.train4game.social.addons.jwt.JwtAuthenticationFilter;
+import com.train4game.social.addons.jwt.JwtLoginFilter;
+import com.train4game.social.addons.jwt.TokenAuthenticationService;
 import com.train4game.social.model.User;
 import com.train4game.social.service.OAuthService;
 import com.train4game.social.service.UserService;
@@ -13,6 +16,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -47,13 +51,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
 
+    @Autowired
+    private Environment environment;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(
-                        "/login", "/register",
+                        "/login", "/register", "/rest/login",
                         "/resend-token", "/confirm-token",
                         "/login/vk", "/response/vk",
                         "/forgot-password", "/reset-password")
@@ -79,7 +86,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout");
+                .logoutSuccessUrl("/login?logout")
+                .and()
+                .addFilterBefore(new JwtLoginFilter("/rest/login", authenticationManager(), tokenAuthenticationService()),
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(tokenAuthenticationService()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -150,5 +161,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Description("Password Encoder")
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public TokenAuthenticationService tokenAuthenticationService() {
+        return new TokenAuthenticationService(environment, userService);
     }
 }
