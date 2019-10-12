@@ -1,7 +1,7 @@
 package com.train4game.social.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.train4game.social.View;
-import com.train4game.social.addons.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
 import org.hibernate.validator.constraints.SafeHtml;
 
@@ -30,17 +30,11 @@ public class UserTo {
 
     @NotBlank(groups = View.UserRegister.class)
     @Size(min = 4, max = 100, groups = View.UserRegister.class)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
-
-    @NotBlank(groups = View.UserRegister.class)
-    @Size(min = 4, max = 100, groups = View.UserRegister.class)
-    String confirmPassword;
 
     @SafeHtml
     String locale;
-
-    @ValidReCaptcha(groups = View.UserRegister.class)
-    String reCaptchaResponse;
 
     Integer vkId;
 
@@ -95,22 +89,6 @@ public class UserTo {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    public String getReCaptchaResponse() {
-        return reCaptchaResponse;
-    }
-
-    public void setReCaptchaResponse(String reCaptchaResponse) {
-        this.reCaptchaResponse = reCaptchaResponse;
     }
 
     public String getLocale() {
