@@ -88,6 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .and()
+                .antMatcher("/rest/**").csrf().disable()
                 .addFilterBefore(new JwtLoginFilter("/rest/login", authenticationManager(), tokenAuthenticationService()),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(tokenAuthenticationService()), UsernamePasswordAuthenticationFilter.class);

@@ -1,4 +1,4 @@
-package com.train4game.social.web.controllers;
+package com.train4game.social.web.controllers.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

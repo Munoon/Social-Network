@@ -1,28 +1,28 @@
-package com.train4game.social.web.controllers;
+package com.train4game.social.web.controllers.rest;
 
-import com.train4game.social.AuthorizedUser;
+import com.train4game.social.model.User;
 import com.train4game.social.service.UserService;
 import com.train4game.social.to.UserTo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.train4game.social.util.UserUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(RestUserController.URL)
+@Slf4j
 public class RestUserController {
     public static final String URL = "/rest/user";
-    private static final Logger log = LoggerFactory.getLogger(RestController.class);
 
     @Autowired
     private UserService service;
 
-    @GetMapping
-    public UserTo get(@AuthenticationPrincipal AuthorizedUser authorizedUser) {
-        log.info("Get user");
-        return authorizedUser.getUserTo();
+    @GetMapping("/{id}")
+    public UserTo get(@PathVariable int id) {
+        User user = service.get(id);
+        return UserUtil.asTo(user);
     }
 }

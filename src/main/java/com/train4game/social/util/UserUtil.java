@@ -72,4 +72,13 @@ public class UserUtil {
         user.setPassword(password);
         return user;
     }
+
+    public static User updateFromTo(User user, UserTo userTo) {
+        user.setName(userTo.getName());
+        user.setSurname(userTo.getSurname());
+        user.setEmail(userTo.getEmail());
+        user.setPassword(userTo.getPassword());
+        user.setLocale(userTo.getLocale());
+        return user;
+    }
 }

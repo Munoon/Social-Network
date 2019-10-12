@@ -1,6 +1,7 @@
 package com.train4game.social.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.train4game.social.HasId;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 

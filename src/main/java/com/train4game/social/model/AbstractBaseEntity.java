@@ -1,9 +1,11 @@
 package com.train4game.social.model;
 
+import com.train4game.social.HasId;
+
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class AbstractBaseEntity {
+public abstract class AbstractBaseEntity implements HasId {
     public static final int START_SEQ = 100;
 
     @Id
@@ -18,10 +20,12 @@ public abstract class AbstractBaseEntity {
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

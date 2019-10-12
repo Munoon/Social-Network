@@ -1,6 +1,7 @@
 package com.train4game.social.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.train4game.social.HasId;
 import com.train4game.social.View;
 import com.train4game.social.web.validators.StringFieldsMatch;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -10,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @StringFieldsMatch(first = "password", second = "confirmPassword",
         message = "{error.passwordsDontMatch}", groups = View.UserRegister.class)
-public class UserTo {
+public class UserTo implements HasId {
     Integer id;
 
     @NotBlank
@@ -51,10 +52,12 @@ public class UserTo {
         this.vkId = vkId;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
