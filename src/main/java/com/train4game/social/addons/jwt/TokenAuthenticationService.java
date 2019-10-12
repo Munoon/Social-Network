@@ -2,6 +2,7 @@ package com.train4game.social.addons.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+@Slf4j
 public class TokenAuthenticationService {
     private final long expirationTime;
     private final String secret;
@@ -36,6 +38,7 @@ public class TokenAuthenticationService {
                 .compact();
 
         response.addHeader(header, prefix + " " + token);
+        log.info("Add JWT token to header for user '{}'", username);
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
@@ -52,6 +55,7 @@ public class TokenAuthenticationService {
 
         if (!StringUtils.isEmpty(email)) {
             UserDetails userDetails = userService.loadUserByUsername(email);
+            log.info("Loaded user '{}' by JWT token", userDetails.getUsername());
             return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         }
 
