@@ -1,10 +1,11 @@
 package com.train4game.social.config;
 
 import com.train4game.social.AuthorizedUser;
-import com.train4game.social.addons.OAuthClientResources;
 import com.train4game.social.addons.jwt.JwtAuthenticationFilter;
 import com.train4game.social.addons.jwt.JwtLoginFilter;
 import com.train4game.social.addons.jwt.TokenAuthenticationService;
+import com.train4game.social.addons.oAuth.CustomOAuthAuthenticationFilter;
+import com.train4game.social.addons.oAuth.OAuthClientResources;
 import com.train4game.social.model.User;
 import com.train4game.social.service.OAuthService;
 import com.train4game.social.service.UserService;
@@ -26,7 +27,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -88,7 +88,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .and()
-                .antMatcher("/rest/**").csrf().disable()
                 .addFilterBefore(new JwtLoginFilter("/rest/login", authenticationManager(), tokenAuthenticationService()),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(tokenAuthenticationService()), UsernamePasswordAuthenticationFilter.class);
@@ -114,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private Filter ssoFilter(OAuthClientResources client, String path, PrincipalExtractor extractor) {
-        final var oAuth2ClientAuthenticationFilter = new OAuth2ClientAuthenticationProcessingFilter(path);
+        final var oAuth2ClientAuthenticationFilter = new CustomOAuthAuthenticationFilter(path, tokenAuthenticationService());
         final var oAuth2RestTemplate = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
         oAuth2ClientAuthenticationFilter.setRestTemplate(oAuth2RestTemplate);
         final var tokenServices = new UserInfoTokenServices(client.getResource().getUserInfoUri(),

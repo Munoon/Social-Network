@@ -1,6 +1,6 @@
 package com.train4game.social.service;
 
-import com.train4game.social.addons.OAuthClientResources;
+import com.train4game.social.addons.oAuth.OAuthClientResources;
 import com.train4game.social.model.User;
 import com.train4game.social.model.VKOAuth;
 import com.train4game.social.repository.UserRepository;

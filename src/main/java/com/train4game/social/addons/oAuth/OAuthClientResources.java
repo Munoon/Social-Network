@@ -1,4 +1,4 @@
-package com.train4game.social.addons;
+package com.train4game.social.addons.oAuth;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
