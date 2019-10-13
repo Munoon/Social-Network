@@ -31,14 +31,17 @@ public class TokenAuthenticationService {
     }
 
     public void addAuthentication(HttpServletResponse response, String username) {
-        String token = Jwts.builder()
+        String token = getToken(username);
+        response.addHeader(header, prefix + " " + token);
+        log.info("Add JWT token to header for user '{}'", username);
+    }
+
+    public String getToken(String username) {
+        return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
-
-        response.addHeader(header, prefix + " " + token);
-        log.info("Add JWT token to header for user '{}'", username);
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {

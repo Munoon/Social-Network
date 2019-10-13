@@ -2,9 +2,11 @@ package com.train4game.social.data;
 
 import com.train4game.social.model.User;
 import com.train4game.social.to.UserTo;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Arrays;
 
+import static com.train4game.social.TestUtil.readFromJsonMvcResult;
 import static com.train4game.social.model.User.Role.ROLE_ADMIN;
 import static com.train4game.social.model.User.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +30,10 @@ public class UserTestData {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "password");
     }
 
+    public static void assertMatch(UserTo actual, UserTo expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "password");
+    }
+
     public static void assertMatch(Iterable<User> actual, User... expected) {
         assertMatch(actual, Arrays.asList(expected));
     }
@@ -42,5 +48,9 @@ public class UserTestData {
 
     public static void assertMatchIgnoreId(Iterable<User> actual, Iterable<User> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("registered", "password", "id").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(UserTo expected) {
+        return result -> assertMatch(readFromJsonMvcResult(result, UserTo.class), expected);
     }
 }
