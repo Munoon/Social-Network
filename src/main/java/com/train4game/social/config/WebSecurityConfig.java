@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -60,10 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(
-                        "/login", "/register", "/rest/login",
+                        "/login", "/register",
                         "/resend-token", "/confirm-token",
                         "/login/vk", "/response/vk",
                         "/forgot-password", "/reset-password")
+                .anonymous()
+                .antMatchers(HttpMethod.POST, "/rest/login")
                 .anonymous()
                 .and()
                 .authorizeRequests()
@@ -87,6 +90,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
+                .and()
+                .csrf().ignoringAntMatchers("/rest/**")
                 .and()
                 .addFilterBefore(new JwtLoginFilter("/rest/login", authenticationManager(), tokenAuthenticationService()),
                         UsernamePasswordAuthenticationFilter.class)

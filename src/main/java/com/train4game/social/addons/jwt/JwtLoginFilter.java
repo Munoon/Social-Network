@@ -15,7 +15,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     private TokenAuthenticationService tokenService;
 
     public JwtLoginFilter(String url, AuthenticationManager authenticationManager, TokenAuthenticationService tokenService) {
-        super(new AntPathRequestMatcher(url));
+        super(new AntPathRequestMatcher(url, "POST"));
         setAuthenticationManager(authenticationManager);
         this.tokenService = tokenService;
     }
