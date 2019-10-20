@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -35,10 +36,6 @@ public class FileService {
         }
 
         String savePath = uploadPath + "/avatars"; // base path to all avatars
-        File uploadDir = new File(savePath);
-        if (!uploadDir.exists()) { // if pass does not exist - create it
-            uploadDir.mkdir();
-        }
 
         User user = userRepository.getOne(userId); // get user reference to set it to new user avatar
         repository.disableAllAvatars(); // disable all avatars. if we dont do that - we will have database error
@@ -66,5 +63,18 @@ public class FileService {
 
         result.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
         ImageIO.write(result, "jpg", output);
+    }
+
+    @PostConstruct
+    private void init() {
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) { // if pass does not exist - create it
+            uploadDir.mkdir();
+        }
+
+        File avatarsUploadDir = new File(uploadPath + "/avatars");
+        if (!avatarsUploadDir.exists()) { // if avatars pass does not exist - create it
+            avatarsUploadDir.mkdir();
+        }
     }
 }
