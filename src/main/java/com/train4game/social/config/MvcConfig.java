@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.train4game.social.addons.DatabaseLocaleResolver;
 import com.train4game.social.web.json.JacksonObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.unit.DataSize;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import javax.servlet.MultipartConfigElement;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,6 +55,14 @@ public class MvcConfig implements WebMvcConfigurer {
         final var localeInterceptor = new LocaleChangeInterceptor();
         localeInterceptor.setParamName("lang");
         return localeInterceptor;
+    }
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(DataSize.ofKilobytes(128));
+        factory.setMaxRequestSize(DataSize.ofKilobytes(128));
+        return factory.createMultipartConfig();
     }
 
     @Override

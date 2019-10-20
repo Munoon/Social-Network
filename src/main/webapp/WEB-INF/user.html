@@ -6,8 +6,11 @@
     <header th:replace="~{fragments/header}"></header>
     <div class="row mt-2">
         <div class="col-5 mx-auto border rounded p-3">
+            <!--/*@thymesVar id="userTo" type="com.train4game.social.to.UserTo"*/-->
             <h2 class="text-center" th:text="#{userTo.update}">Sign up</h2>
-            <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post">
+            <form name="registrationForm" th:action="@{/profile}" th:object="${userTo}" method="post" enctype="multipart/form-data">
+                <img th:src="@{/profile/avatar}" class="avatar" alt="avatar">
+                <input type="file" name="avatar">
                 <input th:replace="~{fragments/inputField :: input('userTo.name', 'name', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.surname', 'surname', 'text')}"/>
                 <input th:replace="~{fragments/inputField :: input('userTo.email', 'email', 'email')}"/>
