@@ -48,8 +48,14 @@ public class FileService {
     }
 
     public byte[] getAvatar(int userId) throws IOException {
-        int id = repository.getCurrentAvatar(userId).getId(); // find current user avatar by user id
-        File file = new File(uploadPath + "/avatars/a" + id + ".jpg");
+        File file;
+        UserAvatar userAvatar = repository.getCurrentAvatar(userId); // find current user avatar by user id
+        if (userAvatar == null) { // if user dont have avatar - we use default
+            file = new File(uploadPath + "/avatars/default.jpg");
+        } else { // if user have avatar - we use it
+            int id = userAvatar.getId();
+            file = new File(uploadPath + "/avatars/a" + id + ".jpg");
+        }
         InputStream inputStream = new FileInputStream(file);
         return StreamUtils.copyToByteArray(inputStream);
     }
