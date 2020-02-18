@@ -14,6 +14,7 @@
             <p class="alert alert-success text-center" th:if="${param.resetPassword}" th:text="#{token.resetPassword.text}">You requested to reset your password.</p>
             <p class="alert alert-success text-center" th:if="${param.resetted}" th:text="#{token.resetPassword.resetted}">You changed your password.</p>
             <p class="alert alert-danger text-center" th:if="${param.expired}" th:text="#{registration.expired.text}">The time of activation is expired.</p>
+            <p class="alert alert-danger text-center" th:if="${param.oauthError}" th:text="#{login.oauth.error}">oAuth error.</p>
             <p class="alert alert-danger text-center" th:if="${param.notfound}">Not Found Exception</p>
 
             <div th:attrappend="hidden=${register} ? 'hidden'" id="loginEl">
@@ -38,6 +39,18 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" th:text="#{common.login}">Login</button>
                 </form>
+                <div class="social-buttons mt-3">
+                    <a class="btn btn-block btn-social btn-facebook" th:href="@{/login/facebook}">
+                        <span class="fa fa-facebook"></span> <span th:text="#{common.oauth.facebook}">Sign in with Facebook</span>
+                    </a>
+                    <a class="btn btn-block btn-social btn-google" th:href="@{/login/google}">
+                        <span class="fa fa-google"></span> <span th:text="#{common.oauth.google}">Sign in with Google</span>
+                    </a>
+                    <a class="btn btn-block btn-social btn-vk" th:href="@{/login/vk}">
+                        <span class="fa fa-vk"></span> <span th:text="#{common.oauth.vk}">Sign in with VK</span>
+                    </a>
+                </div>
+                <hr>
                 <div class="d-flex justify-content-around mt-3">
                     <a href="#" class="link" onclick="showRegister()" th:text="#{registration.register.title}">User Sign up</a>
                     <a th:href="@{/forgot-password}" class="link" th:text="#{login.forgotPassword}">Forgot

@@ -4,6 +4,7 @@ import com.train4game.social.AuthorizedUser;
 import com.train4game.social.model.User;
 import com.train4game.social.repository.UserRepository;
 import com.train4game.social.to.UserSettingsTo;
+import com.train4game.social.to.UserTo;
 import com.train4game.social.util.UserUtil;
 import com.train4game.social.util.exception.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.train4game.social.util.UserUtil.prepareToSave;
 import static com.train4game.social.util.exception.Messages.NOT_FOUND;
@@ -59,6 +61,12 @@ public class UserService implements UserDetailsService {
     public void update(User user) {
         Assert.notNull(user, "User must be not null");
         repository.save(prepareToSave(user, encoder));
+    }
+
+    public void update(UserTo userTo) {
+        Assert.notNull(userTo, "User must be not null");
+        User user = get(userTo.getId());
+        repository.save(prepareToSave(UserUtil.updateFromTo(user, userTo), encoder));
     }
 
     public void updateLocale(int id, String locale) {

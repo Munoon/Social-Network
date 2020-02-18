@@ -2,8 +2,8 @@ package com.train4game.social.web;
 
 import com.train4game.social.util.exception.NotFoundException;
 import com.train4game.social.util.exception.TokenExpiredException;
-import com.train4game.social.web.controllers.ProfileController;
-import com.train4game.social.web.controllers.SecurityController;
+import com.train4game.social.web.controllers.ui.ProfileController;
+import com.train4game.social.web.controllers.ui.SecurityController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;

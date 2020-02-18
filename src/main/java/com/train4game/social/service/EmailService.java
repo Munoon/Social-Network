@@ -22,7 +22,7 @@ public class EmailService {
     private SpringTemplateEngine templateEngine;
 
     public void sendEmail(Email email) throws MessagingException {
-        log.info("Send email to {} - {}", email.getTo(), email.getSubject());
+        log.info("Start sending email to {} - {}", email.getTo(), email.getSubject());
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name());
@@ -36,5 +36,6 @@ public class EmailService {
         helper.setSubject(email.getSubject());
         helper.setText(html, true);
         sender.send(message);
+        log.info("Send email to {} - {}", email.getTo(), email.getSubject());
     }
 }

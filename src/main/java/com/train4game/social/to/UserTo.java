@@ -1,7 +1,8 @@
 package com.train4game.social.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.train4game.social.HasId;
 import com.train4game.social.View;
-import com.train4game.social.addons.recaptcha.ValidReCaptcha;
 import com.train4game.social.web.validators.StringFieldsMatch;
 import org.hibernate.validator.constraints.SafeHtml;
 
@@ -10,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @StringFieldsMatch(first = "password", second = "confirmPassword",
         message = "{error.passwordsDontMatch}", groups = View.UserRegister.class)
-public class UserTo {
+public class UserTo implements HasId {
     Integer id;
 
     @NotBlank
@@ -30,34 +31,33 @@ public class UserTo {
 
     @NotBlank(groups = View.UserRegister.class)
     @Size(min = 4, max = 100, groups = View.UserRegister.class)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
-
-    @NotBlank(groups = View.UserRegister.class)
-    @Size(min = 4, max = 100, groups = View.UserRegister.class)
-    String confirmPassword;
 
     @SafeHtml
     String locale;
 
-    @ValidReCaptcha(groups = View.UserRegister.class)
-    String reCaptchaResponse;
+    Integer vkId;
 
     public UserTo() {
     }
 
-    public UserTo(Integer id, @NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(min = 2, max = 100) String surname, @NotBlank @Size(max = 200) String email, @NotBlank @Size(min = 5, max = 100) String password, String locale) {
+    public UserTo(Integer id, @NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(min = 2, max = 100) String surname, @NotBlank @Size(max = 200) String email, @NotBlank @Size(min = 5, max = 100) String password, String locale, Integer vkId) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.locale = locale;
+        this.vkId = vkId;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
@@ -94,28 +94,20 @@ public class UserTo {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    public String getReCaptchaResponse() {
-        return reCaptchaResponse;
-    }
-
-    public void setReCaptchaResponse(String reCaptchaResponse) {
-        this.reCaptchaResponse = reCaptchaResponse;
-    }
-
     public String getLocale() {
         return locale;
     }
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public Integer getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Integer vkId) {
+        this.vkId = vkId;
     }
 
     @Override

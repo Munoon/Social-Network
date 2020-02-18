@@ -16,6 +16,17 @@
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label th:text="#{common.vk.account}">VK Account</label>
+                    <div th:if="${!vkConnected}">
+                        <span th:text="#{common.notConnected}"></span>
+                        <a th:href="@{/connect/vk}" th:text="#{common.connect}"></a>
+                    </div>
+                    <div th:if="${vkConnected}">
+                        <b th:text="#{common.connected}"></b>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary btn-block" th:text="#{common.update}">
                     Update
                 </button>

@@ -37,4 +37,21 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Override
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles")
     List<User> findAll();
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.googleId = ?1 OR u.email = ?2")
+    User findByGoogleIdOrEmail(String googleId, String email);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.facebookId = ?1 OR u.email = ?2")
+    User findByFacebookIdOrEmail(String facebookId, String email);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.vkId = ?1")
+    User findByVkId(Integer vkId);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.vkId = ?1 OR u.email = ?2")
+    User findByVkIdOrEmail(Integer vkId, String email);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.vkId = ?2 WHERE u.id = ?1")
+    void setVkOauth(int userId, Integer vkOauth);
 }

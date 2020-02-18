@@ -1,5 +1,7 @@
 package com.train4game.social.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.train4game.social.HasId;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -29,10 +31,12 @@ public class User extends AbstractNamedEntity {
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "registered", nullable = false, columnDefinition = "TIMESTAMP DEFAULT now()")
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
     @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
@@ -40,6 +44,15 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "locale", nullable = false, columnDefinition = "VARCHAR DEFAULT 'en'")
     private String locale = "en";
+
+    @Column(name = "google_id")
+    private String googleId;
+
+    @Column(name = "facebook_id")
+    private String facebookId;
+
+    @Column(name = "vk_id")
+    private Integer vkId;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -148,6 +161,30 @@ public class User extends AbstractNamedEntity {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public Integer getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Integer vkId) {
+        this.vkId = vkId;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.train4game.social.web.controllers;
+package com.train4game.social.web.controllers.ui;
 
 import com.train4game.social.model.Token;
 import com.train4game.social.model.User;
