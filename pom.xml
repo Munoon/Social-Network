@@ -32,7 +32,7 @@
 
         <!-- MISC -->
         <guava.version>29.0-jre</guava.version>
-        <jsoup.version>1.14.2</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
